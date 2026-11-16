@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import sys
 import time
 import urllib.error
@@ -32,8 +33,24 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8")
 
 
+# Логи публичного репозитория видны всем: суммы бонусов и текст изменений в лог не пишутся.
+# Это страховка на случай, если сумма всё же попадёт в сообщение (например, в текст ошибки):
+# «1 200 000», «1200000», «12e5» → «•••». Номера запусков (11+ цифр) и даты не трогаются.
+_AMOUNT_RES = [
+    re.compile(r"(?<![\w.])\d{1,3}(?:[   ]\d{3})+(?![\w.])"),   # 1 200 000
+    re.compile(r"(?<![\w.])\d+(?:\.\d+)?e\d+(?![\w.])", re.I),             # 12e5, 1.2e6
+    re.compile(r"(?<![\w.:/-])\d{5,8}(?![\w.:/-])"),                        # 1200000, 90000
+]
+
+
+def redact(msg: str) -> str:
+    for rx in _AMOUNT_RES:
+        msg = rx.sub("•••", msg)
+    return msg
+
+
 def log(msg: str) -> None:
-    print(f"[{datetime.now(timezone.utc).strftime('%H:%M:%S')}] {msg}", flush=True)
+    print(f"[{datetime.now(timezone.utc).strftime('%H:%M:%S')}] {redact(str(msg))}", flush=True)
 
 
 def now_utc_iso() -> str:
