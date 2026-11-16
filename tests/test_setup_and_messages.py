@@ -99,6 +99,27 @@ def test_first_run_with_secrets_admin_only(tmp_path, fake_server, live, with_his
     assert handler.calls == []
 
 
+def test_hello_not_marked_when_telegram_refuses(tmp_path, fake_server, live):
+    """Telegram ответил «chat not found» → отметка не ставится, при следующем запуске приветствие повторится."""
+    base, handler = fake_server
+    handler.fail_chats.add("555")
+    data_dir, out_dir = tmp_path / "data", tmp_path / "out"
+    data_dir.mkdir()
+    from check import build_snapshot
+    (data_dir / "history.json").write_text(json.dumps([build_snapshot(live, None, "2026-11-16")], ensure_ascii=False), encoding="utf-8")
+    env = {"DATA_DIR": str(data_dir), "OUT_DIR": str(out_dir), "CONFIRM_DELAY": "0", "BOT_TOKEN": "123:TEST",
+           "GROUP_CHAT_ID": "-1001", "ADMIN_CHAT_ID": "555", "TELEGRAM_API": base}
+    assert run("check.py", ["--no-fallback"], env).returncode == 0
+    r = run("notify.py", [], env)
+    assert r.returncode == 1 and "chat not found" in r.stdout
+    assert json.loads((data_dir / "last_check.json").read_text(encoding="utf-8"))["baseline_notified"] is False
+    handler.fail_chats.clear(); handler.calls.clear()
+    run("check.py", ["--no-fallback"], env)
+    assert run("notify.py", [], env).returncode == 0
+    assert [c["payload"]["chat_id"] for c in handler.calls] == ["555"]
+    assert json.loads((data_dir / "last_check.json").read_text(encoding="utf-8"))["baseline_notified"] is True
+
+
 # ------------------------------------------------ ТЕСТ-сообщение в группу
 def _digest(folder: Path) -> dict:
     return {p.name: hashlib.sha256(p.read_bytes()).hexdigest()[:16] for p in sorted(folder.glob("*.json"))}

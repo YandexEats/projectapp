@@ -81,8 +81,18 @@ jobs:
         uses: actions/deploy-pages@v4
 
       - name: Отправка в Telegram
+        id: notify
         if: steps.check.outcome == 'success' && steps.check.outputs.has_pending == 'true'
         run: python monitor/notify.py
+
+      - name: Сохранить отметку о доставке приветствия
+        if: always() && steps.notify.outcome != 'skipped'
+        run: |
+          git add data
+          if git diff --cached --quiet; then echo "Нечего коммитить"; exit 0; fi
+          git commit -m "data: приветствие администратору доставлено"
+          for i in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push && exit 0; sleep 5; done
+          exit 1
 
       - name: Telegram (нет новых сообщений)
         if: steps.check.outcome == 'success' && steps.check.outputs.has_pending != 'true'

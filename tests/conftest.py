@@ -41,6 +41,10 @@ class _Recorder(BaseHTTPRequestHandler):
         n = int(self.headers.get("Content-Length", 0))
         payload = json.loads(self.rfile.read(n) or b"{}")
         type(self).calls.append({"path": self.path, "payload": payload})
+        if str(payload.get("chat_id")) in type(self).fail_chats:
+            err = json.dumps({"ok": False, "error_code": 400, "description": "Bad Request: chat not found"}).encode()
+            self.send_response(400); self.send_header("Content-Type", "application/json"); self.end_headers(); self.wfile.write(err)
+            return
         out = json.dumps({"ok": True, "result": {"message_id": len(type(self).calls)}}).encode()
         self.send_response(200); self.send_header("Content-Type", "application/json"); self.end_headers(); self.wfile.write(out)
 
@@ -55,7 +59,7 @@ def live():
 @pytest.fixture
 def fake_server():
     """Локальный HTTP-сервер: отдаёт заданные страницы и записывает POST (поддельный Telegram)."""
-    handler = type("H", (_Recorder,), {"routes": {}, "calls": []})
+    handler = type("H", (_Recorder,), {"routes": {}, "calls": [], "fail_chats": set()})
     srv = ThreadingHTTPServer(("127.0.0.1", 0), handler)
     t = threading.Thread(target=srv.serve_forever, daemon=True)
     t.start()

@@ -14,7 +14,7 @@ import sys
 import time
 from pathlib import Path
 
-from common import ROOT, dashboard_url, http_get, log, read_json, today_tashkent
+from common import DATA_DIR, ROOT, dashboard_url, http_get, log, read_json, write_json
 import telegram
 
 OUT = Path(os.environ.get("OUT_DIR", ROOT / "out")) / "pending.json"
@@ -61,6 +61,15 @@ def send_test_group(s: dict) -> None:
     telegram.send(s["token"], s["group"], text, url)
 
 
+def mark_hello_sent() -> None:
+    """Отметить в data/last_check.json, что приветствие администратору доставлено."""
+    path = DATA_DIR / "last_check.json"
+    last = read_json(path, {})
+    last["baseline_notified"] = True
+    write_json(path, last)
+    log("Отметка baseline_notified=true сохранена.")
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--test-group", action="store_true")
@@ -82,9 +91,13 @@ def main(argv=None) -> int:
     for m in pending.get("admin", []):
         try:
             telegram.send(s["token"], s["admin"], m["text"], m.get("url"))
+            if m.get("kind") == "hello":
+                mark_hello_sent()
         except Exception as e:  # noqa: BLE001
             ok = False
             log(f"Ошибка отправки администратору: {e}")
+            if "chat not found" in str(e):
+                log("Подсказка: ADMIN_CHAT_ID должен быть вашим личным ID, и вы должны написать боту /start в личном чате.")
     if pending.get("group"):
         try:
             telegram.send(s["token"], s["group"], pending["group"]["text"], pending["group"]["url"])

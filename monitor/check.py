@@ -183,8 +183,8 @@ def main(argv=None) -> int:
                     "Дальше: проверка каждый день в 10:00 (Ташкент). В группу пишу только при изменениях, "
                     "сюда — только служебные сообщения и предупреждения.",
             "url": dashboard_url(),
+            "kind": "hello",  # отметку baseline_notified ставит notify.py только после успешной отправки
         })
-        last_info["baseline_notified"] = True
 
     last_info.update(status=status, method=snapshot["method"], bundle_file=snapshot["bundle_file"], error=None,
                      history_start=history[0]["date"] if history else None, snapshots=len(history))
