@@ -1,0 +1,1285 @@
+[
+  {
+    "cities": {
+      "tashkent": {
+        "name_ru": "Ташкент",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1200000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1200000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "samarkand": {
+        "name_ru": "Самарканд",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1200000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1200000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "andijan": {
+        "name_ru": "Андижан",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 1200000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 1200000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 900000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 900000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "namangan": {
+        "name_ru": "Наманган",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "ebike": [],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "fergana": {
+        "name_ru": "Фергана",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "ebike": [],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "bukhara": {
+        "name_ru": "Бухара",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "ebike": [],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "walking": []
+        }
+      }
+    },
+    "offices": null,
+    "hero_text": null,
+    "notes": null,
+    "city_list": [
+      "tashkent",
+      "samarkand",
+      "andijan",
+      "namangan",
+      "fergana",
+      "bukhara"
+    ],
+    "date": "2026-06-01",
+    "checked_at": "2026-06-01T05:00:00+00:00",
+    "bundle_file": "/assets/index-TEST0001.js",
+    "method": "bundle"
+  },
+  {
+    "cities": {
+      "tashkent": {
+        "name_ru": "Ташкент",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1200000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1200000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "samarkand": {
+        "name_ru": "Самарканд",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1200000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1200000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "andijan": {
+        "name_ru": "Андижан",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 1200000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 1200000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 900000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 900000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "namangan": {
+        "name_ru": "Наманган",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 700000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "ebike": [],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "fergana": {
+        "name_ru": "Фергана",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "ebike": [],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "bukhara": {
+        "name_ru": "Бухара",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "ebike": [],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "walking": []
+        }
+      }
+    },
+    "offices": null,
+    "hero_text": null,
+    "notes": null,
+    "city_list": [
+      "tashkent",
+      "samarkand",
+      "andijan",
+      "namangan",
+      "fergana",
+      "bukhara"
+    ],
+    "date": "2026-07-15",
+    "checked_at": "2026-07-15T05:00:00+00:00",
+    "bundle_file": "/assets/index-TEST20260715.js",
+    "method": "bundle"
+  },
+  {
+    "cities": {
+      "tashkent": {
+        "name_ru": "Ташкент",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1200000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1200000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "samarkand": {
+        "name_ru": "Самарканд",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1200000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1200000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "andijan": {
+        "name_ru": "Андижан",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 1200000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 1200000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 900000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 900000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "namangan": {
+        "name_ru": "Наманган",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 700000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "ebike": [],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "fergana": {
+        "name_ru": "Фергана",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "ebike": [],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "bukhara": {
+        "name_ru": "Бухара",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 100,
+              "bonus": 500000
+            }
+          ],
+          "ebike": [],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "walking": []
+        }
+      }
+    },
+    "offices": null,
+    "hero_text": null,
+    "notes": null,
+    "city_list": [
+      "tashkent",
+      "samarkand",
+      "andijan",
+      "namangan",
+      "fergana",
+      "bukhara"
+    ],
+    "date": "2026-08-20",
+    "checked_at": "2026-08-20T05:00:00+00:00",
+    "bundle_file": "/assets/index-TEST20260820.js",
+    "method": "bundle"
+  },
+  {
+    "cities": {
+      "tashkent": {
+        "name_ru": "Ташкент",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1200000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1200000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "samarkand": {
+        "name_ru": "Самарканд",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1200000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1200000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "andijan": {
+        "name_ru": "Андижан",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 1200000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 1200000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 900000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 900000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "namangan": {
+        "name_ru": "Наманган",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 700000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 600000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "fergana": {
+        "name_ru": "Фергана",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "ebike": [],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "bukhara": {
+        "name_ru": "Бухара",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 100,
+              "bonus": 500000
+            }
+          ],
+          "ebike": [],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "walking": []
+        }
+      }
+    },
+    "offices": null,
+    "hero_text": null,
+    "notes": null,
+    "city_list": [
+      "tashkent",
+      "samarkand",
+      "andijan",
+      "namangan",
+      "fergana",
+      "bukhara"
+    ],
+    "date": "2026-09-10",
+    "checked_at": "2026-09-10T05:00:00+00:00",
+    "bundle_file": "/assets/index-TEST20260910.js",
+    "method": "bundle"
+  },
+  {
+    "cities": {
+      "tashkent": {
+        "name_ru": "Ташкент",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1500000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1200000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "samarkand": {
+        "name_ru": "Самарканд",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1000000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1200000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "andijan": {
+        "name_ru": "Андижан",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 1200000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 1200000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 900000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 900000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "namangan": {
+        "name_ru": "Наманган",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 700000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 600000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "fergana": {
+        "name_ru": "Фергана",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "ebike": [],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "bukhara": {
+        "name_ru": "Бухара",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 100,
+              "bonus": 500000
+            }
+          ],
+          "ebike": [],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "walking": []
+        }
+      }
+    },
+    "offices": null,
+    "hero_text": null,
+    "notes": null,
+    "city_list": [
+      "tashkent",
+      "samarkand",
+      "andijan",
+      "namangan",
+      "fergana",
+      "bukhara"
+    ],
+    "date": "2026-10-05",
+    "checked_at": "2026-10-05T05:00:00+00:00",
+    "bundle_file": "/assets/index-TEST20261005.js",
+    "method": "bundle"
+  },
+  {
+    "cities": {
+      "tashkent": {
+        "name_ru": "Ташкент",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1500000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1200000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "samarkand": {
+        "name_ru": "Самарканд",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1000000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1200000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "andijan": {
+        "name_ru": "Андижан",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 1200000
+            },
+            {
+              "days": 60,
+              "orders": 200,
+              "bonus": 2000000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 1200000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 900000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 900000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "namangan": {
+        "name_ru": "Наманган",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 700000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 600000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "fergana": {
+        "name_ru": "Фергана",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "ebike": [],
+          "bike": [],
+          "walking": []
+        }
+      },
+      "bukhara": {
+        "name_ru": "Бухара",
+        "name_uz": null,
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 100,
+              "bonus": 500000
+            }
+          ],
+          "ebike": [],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "walking": []
+        }
+      }
+    },
+    "offices": null,
+    "hero_text": null,
+    "notes": null,
+    "city_list": [
+      "tashkent",
+      "samarkand",
+      "andijan",
+      "namangan",
+      "fergana",
+      "bukhara"
+    ],
+    "date": "2026-11-12",
+    "checked_at": "2026-11-12T05:00:00+00:00",
+    "bundle_file": "/assets/index-TEST20261112.js",
+    "method": "bundle"
+  }
+]

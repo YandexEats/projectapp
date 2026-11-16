@@ -1,0 +1,98 @@
+name: Мониторинг реферальной программы
+
+on:
+  schedule:
+    - cron: "0 5 * * *"   # 05:00 UTC = 10:00 Ташкент, каждый день
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Режим: check — обычная проверка; test_group_message — одно ТЕСТ-сообщение в группу"
+        type: choice
+        options: [check, test_group_message]
+        default: check
+      allow_city_removal:
+        description: "Принять исчезновение города как реальное изменение"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: tezkor-monitor
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    env:
+      BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+      GROUP_CHAT_ID: ${{ secrets.GROUP_CHAT_ID }}
+      ADMIN_CHAT_ID: ${{ secrets.ADMIN_CHAT_ID }}
+      PYTHONUNBUFFERED: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Проверка сайта
+        id: check
+        if: inputs.mode != 'test_group_message'
+        run: python monitor/check.py ${{ inputs.allow_city_removal && '--allow-city-removal' || '' }}
+
+      - name: Коммит данных в репозиторий
+        if: always() && inputs.mode != 'test_group_message'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          if git diff --cached --quiet; then echo "Нечего коммитить"; exit 0; fi
+          git commit -m "data: проверка $(TZ=Asia/Tashkent date +%F) — ${{ steps.check.outputs.status || 'error' }}"
+          for i in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push && exit 0; sleep 5; done
+          exit 1
+
+      - name: Сборка дашборда
+        if: always() && inputs.mode != 'test_group_message'
+        run: |
+          mkdir -p _site
+          cp -r site/. _site/
+          cp -r data _site/data
+
+      - uses: actions/upload-pages-artifact@v3
+        if: always() && inputs.mode != 'test_group_message'
+        with:
+          path: _site
+
+      - name: Публикация на GitHub Pages
+        id: deploy
+        if: always() && inputs.mode != 'test_group_message'
+        uses: actions/deploy-pages@v4
+
+      - name: Отправка в Telegram
+        if: steps.check.outcome == 'success' && steps.check.outputs.has_pending == 'true'
+        run: python monitor/notify.py
+
+      - name: Telegram (нет новых сообщений)
+        if: steps.check.outcome == 'success' && steps.check.outputs.has_pending != 'true'
+        run: |
+          if [ -z "$BOT_TOKEN" ] || [ -z "$GROUP_CHAT_ID" ]; then
+            echo "секреты не заданы — Telegram пропущен"
+          else
+            echo "Изменений нет — сообщение в группу не отправляется"
+          fi
+
+      - name: Тестовое сообщение в группу
+        if: inputs.mode == 'test_group_message'
+        run: python monitor/notify.py --test-group
