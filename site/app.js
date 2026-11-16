@@ -30,7 +30,7 @@
   // AAD = "tezkor-referral-monitor/v1/<имя>". В localStorage хранится только производный ключ.
   const KEY_STORE = "tezkor-dashboard-key-v1";
   const MIN_ITER = 300000;
-  const AAD_PREFIX = "tezkor-referral-monitor/v1/";
+  const AAD_PREFIX = "tezkor-referral-monitor/v1/"; // метка формата (как в vault.py), не имя репозитория — не менять
   const enc = new TextEncoder(), dec = new TextDecoder();
   const b64d = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
   const b64e = (u8) => { let s = ""; u8.forEach((b) => (s += String.fromCharCode(b))); return btoa(s); };

@@ -16,7 +16,7 @@ from diff import compare  # noqa: E402
 import telegram  # noqa: E402
 
 PY = sys.executable
-DASH = "https://example.github.io/tezkor-referral-monitor/"
+DASH = "https://example.github.io/dashboard/"  # условный адрес для тестов (настоящий — в config.json)
 
 
 def run(script, args, env_extra, cwd=ROOT):
@@ -139,7 +139,7 @@ def test3_broken_site_alerts_admin_only(tmp_path, fake_server, live, case):
     hist_bytes = (data_dir / "history.json.enc").read_bytes()
     env = {"SITE_URL": site, "DATA_DIR": str(data_dir), "OUT_DIR": str(out_dir), "CONFIRM_DELAY": "0", "PW_TIMEOUT": "8000",
            "BOT_TOKEN": "123:TEST", "GROUP_CHAT_ID": "-1001", "ADMIN_CHAT_ID": "-1002", "TELEGRAM_API": base,
-           "GITHUB_SERVER_URL": "https://github.com", "GITHUB_REPOSITORY": "owner/tezkor-referral-monitor", "GITHUB_RUN_ID": "777"}
+           "GITHUB_SERVER_URL": "https://github.com", "GITHUB_REPOSITORY": "owner/repo", "GITHUB_RUN_ID": "777"}
     r = run("check.py", [], env)
     assert r.returncode != 0, "должен завершиться с ошибкой"
     assert (data_dir / "history.json.enc").read_bytes() == hist_bytes, "история не должна меняться"
@@ -148,7 +148,7 @@ def test3_broken_site_alerts_admin_only(tmp_path, fake_server, live, case):
     alert = handler.calls[0]["payload"]["text"]
     print("===== Сообщение администратору =====\n" + alert)
     assert "Не удалось прочитать сайт, возможно изменилась структура" in alert
-    assert "https://github.com/owner/tezkor-referral-monitor/actions/runs/777" in alert
+    assert "https://github.com/owner/repo/actions/runs/777" in alert
     last = read_enc(data_dir, "last_check.json")
     assert last["status"] == "error"
 

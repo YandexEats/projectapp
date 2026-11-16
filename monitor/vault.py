@@ -34,6 +34,8 @@ ALG, KDF = "AES-256-GCM", "PBKDF2-SHA256"
 ITERATIONS = 600_000
 MIN_ITERATIONS = 300_000
 SALT_BYTES, IV_BYTES = 16, 12
+# Метка формата шифрования, НЕ адрес и НЕ имя репозитория. При переименовании репозитория не менять:
+# она входит в каждый зашифрованный файл, после смены старые данные перестанут расшифровываться.
 AAD_PREFIX = "tezkor-referral-monitor/v1/"
 ENV_PASSWORD, ENV_PASSWORD_OLD = "DASHBOARD_PASSWORD", "DASHBOARD_PASSWORD_OLD"
 DATA_NAMES = ("history.json", "changes.json", "last_check.json")

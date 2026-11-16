@@ -10,6 +10,7 @@ import pytest
 
 from conftest import ROOT, read_enc, write_enc
 from test_monitor import run
+from common import dashboard_url, github_repo
 
 PS = "powershell.exe"
 
@@ -83,8 +84,7 @@ def test_first_run_with_secrets_admin_only(tmp_path, fake_server, live, with_his
         write_enc(data_dir, "history.json", [build_snapshot(live, None, "2026-11-16")])
         write_enc(data_dir, "last_check.json", {"baseline_notified": False})
     env = {"DATA_DIR": str(data_dir), "OUT_DIR": str(out_dir), "CONFIRM_DELAY": "0", "BOT_TOKEN": "123:TEST",
-           "GROUP_CHAT_ID": "-1001", "ADMIN_CHAT_ID": "555", "TELEGRAM_API": base,
-           "DASHBOARD_URL": "https://yandexeats.github.io/tezkor-referral-monitor/"}
+           "GROUP_CHAT_ID": "-1001", "ADMIN_CHAT_ID": "555", "TELEGRAM_API": base}  # адрес дашборда — из config.json
     assert run("check.py", ["--no-fallback"], env).returncode == 0
     assert run("notify.py", [], env).returncode == 0
     assert [c["payload"]["chat_id"] for c in handler.calls] == ["555"], "только админу, в группу ничего"
@@ -129,8 +129,7 @@ def _digest(folder: Path) -> dict:
 def test_test_group_message_does_not_touch_data(fake_server):
     base, handler = fake_server
     before = _digest(ROOT / "data")
-    env = {"BOT_TOKEN": "123:TEST", "GROUP_CHAT_ID": "-1001", "ADMIN_CHAT_ID": "555", "TELEGRAM_API": base,
-           "DASHBOARD_URL": "https://yandexeats.github.io/tezkor-referral-monitor/"}
+    env = {"BOT_TOKEN": "123:TEST", "GROUP_CHAT_ID": "-1001", "ADMIN_CHAT_ID": "555", "TELEGRAM_API": base}
     assert run("notify.py", ["--test-group"], env).returncode == 0
     assert _digest(ROOT / "data") == before, "data/ не должна меняться"
     assert [c["payload"]["chat_id"] for c in handler.calls] == ["-1001"]
@@ -139,4 +138,20 @@ def test_test_group_message_does_not_touch_data(fake_server):
     print("===== ТЕСТ в группу =====\n" + p["text"] + "\nКнопка: " + url)
     assert p["text"].startswith("🧪 <b>ТЕСТ, не реальное изменение</b>")
     assert "🚲 Электровело: появился, 600 000 сум, 80 заказов за 30 дней" in p["text"]
-    assert url == "https://yandexeats.github.io/tezkor-referral-monitor/?date=2026-09-10&city=namangan&test=1"
+    assert url == dashboard_url() + "?date=2026-09-10&city=namangan&test=1"
+
+
+# ------------------------------------------------ адрес дашборда: одно место (config.json)
+def test_dashboard_url_comes_from_config(monkeypatch):
+    monkeypatch.delenv("DASHBOARD_URL", raising=False)
+    repo = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))["github_repo"]
+    owner, name = repo.split("/")
+    print(f"\nconfig.json: {repo} → {dashboard_url()}")
+    assert dashboard_url() == f"https://{owner.lower()}.github.io/{name}/"
+    assert github_repo() == repo
+    # ps1-скрипты читают то же значение
+    for script in ("set_secrets.ps1", "set_dashboard_password.ps1"):
+        cmd = f"$env:SET_SECRETS_SELFTEST='1'; . '{ROOT / script}'; $repo"
+        r = subprocess.run([PS, "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", cmd], capture_output=True, text=True)
+        print(f"{script}: $repo = {r.stdout.strip().splitlines()[-1]}")
+        assert r.stdout.strip().splitlines()[-1] == repo
