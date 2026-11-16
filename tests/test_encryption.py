@@ -153,13 +153,54 @@ def test_build_site_publishes_only_ciphertext(tmp_path):
     files = sorted(p.relative_to(out).as_posix() for p in out.rglob("*") if p.is_file())
     print("\nФайлы сборки:", files)
     assert not [f for f in files if f.endswith(".json")], "ни одного открытого JSON"
-    assert {"data/history.json.enc", "data/changes.json.enc", "data/last_check.json.enc",
-            "testdata/history.json.enc", "testdata/changes.json.enc", "testdata/last_check.json.enc", "index.html", "app.js"} <= set(files)
+    assert set(files) == {"index.html", "app.js", "style.css", "ui.json.enc",
+                          "data/history.json.enc", "data/changes.json.enc", "data/last_check.json.enc",
+                          "testdata/history.json.enc", "testdata/changes.json.enc", "testdata/last_check.json.enc"}
     enc_text = "\n".join((out / f).read_text(encoding="utf-8") for f in files if f.endswith(".enc"))
     assert "tashkent" not in enc_text and "1000000" not in enc_text
-    salt = lambda f: json.loads((out / f).read_text())["salt"]  # noqa: E731
-    assert salt("data/history.json.enc") == salt("testdata/history.json.enc"), "один ключ для данных и ?test=1"
+    env = lambda f: json.loads((out / f).read_text())  # noqa: E731
+    assert {env(f)["v"] for f in files if f.endswith(".enc")} == {2}, "публикуется только формат v2"
+    assert env("data/history.json.enc")["salt"] == env("testdata/history.json.enc")["salt"] == env("ui.json.enc")["salt"]
     assert read_enc(out / "testdata", "changes.json") == changes
+    assert read_enc(out / "data", "history.json") == history
+    ui = read_enc(out, "ui.json")
+    assert 'id="app-header"' in ui["html"] and "function startDashboard" in ui["js"]
+
+
+def test_public_files_are_neutral(tmp_path):
+    """Открытые файлы сайта не упоминают тему проекта; сборка падает, если упоминание появится."""
+    import build_site
+    for name in ("index.html", "app.js", "style.css"):
+        text = (ROOT / "site" / name).read_text(encoding="utf-8")
+        print(f"\n{name}: найдено {build_site.forbidden_in(text)}")
+        assert build_site.forbidden_in(text) == []
+    for name in build_site.PRIVATE_FILES:  # тема есть только в закрытых файлах
+        assert build_site.forbidden_in((ROOT / "site" / name).read_text(encoding="utf-8"))
+    bad = tmp_path / "bad"
+    bad.mkdir()
+    (bad / "index.html").write_text("<title>Курьер Bonus</title>", encoding="utf-8")
+    (bad / "dashboard.js").write_text("// x", encoding="utf-8")
+    problems = build_site.verify_site(bad)
+    print("Проверка сборки с нарушениями:", problems)
+    assert any("курьер" in p and "bonus" in p for p in problems) and any("dashboard.js" in p for p in problems)
+
+
+def test_legacy_v1_files_are_still_readable(tmp_path):
+    """Данные в репозитории в старом формате v1 читаются; при записи становятся v2."""
+    import base64
+    import os
+    from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+    salt, iv = os.urandom(16), os.urandom(12)
+    key = vault.derive_key(TEST_PASSWORD, salt, vault.ITERATIONS)
+    ct = AESGCM(key).encrypt(iv, json.dumps([1, 2]).encode(), vault.aad("history.json", 1))
+    b = lambda x: base64.b64encode(x).decode()  # noqa: E731
+    tmp_path.joinpath("history.json.enc").write_text(json.dumps(
+        {"v": 1, "alg": "AES-256-GCM", "kdf": "PBKDF2-SHA256", "iter": vault.ITERATIONS, "salt": b(salt), "iv": b(iv), "ct": b(ct)}))
+    v = vault.Vault(tmp_path, TEST_PASSWORD)
+    assert v.load("history.json", None) == [1, 2]
+    v.save("history.json", [1, 2])
+    e = json.loads(tmp_path.joinpath("history.json.enc").read_text())
+    assert e["v"] == 2 and e["salt"] == b(salt), "соль та же — запомненный ключ подходит"
 
 
 def test_build_site_never_publishes_plaintext(tmp_path):
@@ -226,14 +267,20 @@ def test_dashboard_password_gate_in_browser(served_site):
         page.on("pageerror", lambda e: errors.append(str(e)))
         visible = lambda sel: page.locator(sel).is_visible()  # noqa: E731
 
-        # 1. Открытие: только поле пароля
+        # 1. Открытие: нейтральная форма «Панель» — поле пароля и кнопка, больше ничего
         page.goto(url)
         page.wait_for_selector("#login-form", state="visible")
-        assert page.get_by_text("Введите пароль", exact=True).is_visible()
-        assert not visible("#app-header") and not visible("#app-main")
-        html = page.content()  # до входа в странице нет ни одного значения из данных
-        assert "Наманган" not in html and "Самарканд" not in html and "заказов" not in html
-        assert page.inner_html("#current-table") == "" and page.inner_text("#change-log") == ""
+        assert page.title() == "Панель"
+        assert page.inner_text(".login-title") == "Панель"
+        assert page.get_attribute("#pw", "placeholder") == "Введите пароль"
+        assert page.inner_text("#login-btn") == "Войти"
+        body = page.inner_text("body")
+        print("\nТекст страницы до входа:", repr(body))
+        assert page.locator("#app-header").count() == 0 and page.locator("#current-table").count() == 0
+        html = page.content()  # до входа нет ни темы, ни данных
+        low = html.lower()
+        for w in ("uzum", "tezkor", "реферал", "курьер", "бонус", "referral", "courier", "bonus", "наманган", "заказов"):
+            assert w not in low, w
         page.screenshot(path=str(EVIDENCE / "390_01_login.png"))
 
         # 2. Неверный пароль
@@ -250,7 +297,7 @@ def test_dashboard_password_gate_in_browser(served_site):
         page.wait_for_selector("#app-main", state="visible")
         page.wait_for_selector("#current-table td.city")
         assert "Ташкент" in page.inner_text("#current-table")
-        assert page.evaluate("localStorage.getItem('tezkor-dashboard-key-v1')") is None
+        assert page.evaluate("localStorage.getItem('panel-key-v2')") is None
         page.wait_for_timeout(400)
         page.screenshot(path=str(EVIDENCE / "390_03_after_login.png"))
         page.reload()
@@ -261,7 +308,7 @@ def test_dashboard_password_gate_in_browser(served_site):
         page.check("#remember")
         page.click("#login-btn")
         page.wait_for_selector("#app-main", state="visible")
-        stored = page.evaluate("localStorage.getItem('tezkor-dashboard-key-v1')")
+        stored = page.evaluate("localStorage.getItem('panel-key-v2')")
         print("\nlocalStorage:", stored[:60] + "…")
         st = json.loads(stored)
         assert set(st) == {"v", "salt", "iter", "k"} and TEST_PASSWORD not in stored and len(vault._b64d(st["k"])) == 32
@@ -287,7 +334,7 @@ def test_dashboard_password_gate_in_browser(served_site):
         # 6. «Выйти» → ключ удалён, снова форма пароля (параметры ссылки сохраняются)
         page.click("#logout")
         page.wait_for_selector("#login-form", state="visible")
-        assert page.evaluate("localStorage.getItem('tezkor-dashboard-key-v1')") is None
+        assert page.evaluate("localStorage.getItem('panel-key-v2')") is None
         assert "city=namangan" in page.url
         page.screenshot(path=str(EVIDENCE / "390_05_after_logout.png"))
 

@@ -1,11 +1,12 @@
 """Шифрование данных дашборда паролем.
 
 Формат файла *.json.enc (JSON-конверт, совместим с Web Crypto в site/app.js):
-    {"v": 1, "alg": "AES-256-GCM", "kdf": "PBKDF2-SHA256", "iter": 600000,
+    {"v": 2, "alg": "AES-256-GCM", "kdf": "PBKDF2-SHA256", "iter": 600000,
      "salt": "<base64, 16 байт>", "iv": "<base64, 12 байт>", "ct": "<base64: шифртекст + тег 16 байт>"}
 
 - Ключ: PBKDF2-HMAC-SHA256(пароль NFC в UTF-8, salt, iter) → 32 байта (AES-256).
-- AAD = "tezkor-referral-monitor/v1/<имя файла без .enc>": файл нельзя подменить другим.
+- AAD = AAD_PREFIXES[v] + <имя файла без .enc>: файл нельзя подменить другим.
+  Пишется всегда v2 (нейтральная метка "p/v2/", она видна в открытом app.js); v1 только читается.
 - IV новый (случайный) при КАЖДОЙ записи. Соль случайная, но постоянная, пока не сменился
   пароль: так ключ, «запомненный» в браузере, продолжает работать после ежедневной проверки.
 - Открытый текст в репозиторий не пишется никогда: save() удаляет старый *.json рядом.
@@ -29,14 +30,15 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
-VERSION = 1
+VERSION = 2
 ALG, KDF = "AES-256-GCM", "PBKDF2-SHA256"
 ITERATIONS = 600_000
 MIN_ITERATIONS = 300_000
 SALT_BYTES, IV_BYTES = 16, 12
-# Метка формата шифрования, НЕ адрес и НЕ имя репозитория. При переименовании репозитория не менять:
-# она входит в каждый зашифрованный файл, после смены старые данные перестанут расшифровываться.
-AAD_PREFIX = "tezkor-referral-monitor/v1/"
+# Метки формата шифрования (AAD), НЕ адрес и НЕ имя репозитория. При переименовании репозитория не менять:
+# метка входит в каждый зашифрованный файл. v1 — старый формат (только чтение), v2 — текущий,
+# его же использует site/app.js (там метка должна быть нейтральной: страница до входа видна всем).
+AAD_PREFIXES = {1: "tezkor-referral-monitor/v1/", 2: "p/v2/"}
 ENV_PASSWORD, ENV_PASSWORD_OLD = "DASHBOARD_PASSWORD", "DASHBOARD_PASSWORD_OLD"
 DATA_NAMES = ("history.json", "changes.json", "last_check.json")
 
@@ -85,8 +87,8 @@ def derive_key(password: str, salt: bytes, iterations: int) -> bytes:
     return kdf.derive(normalize_password(password))
 
 
-def aad(name: str) -> bytes:
-    return (AAD_PREFIX + name).encode("utf-8")
+def aad(name: str, version: int = VERSION) -> bytes:
+    return (AAD_PREFIXES[version] + name).encode("utf-8")
 
 
 def encrypt_obj(obj, name: str, password: str, salt: bytes, iterations: int = ITERATIONS) -> dict:
@@ -98,7 +100,7 @@ def encrypt_obj(obj, name: str, password: str, salt: bytes, iterations: int = IT
 
 
 def check_envelope(env) -> None:
-    if not isinstance(env, dict) or env.get("v") != VERSION or env.get("alg") != ALG or env.get("kdf") != KDF:
+    if not isinstance(env, dict) or env.get("v") not in AAD_PREFIXES or env.get("alg") != ALG or env.get("kdf") != KDF:
         raise VaultError("Неизвестный формат зашифрованного файла")
     if int(env.get("iter", 0)) < MIN_ITERATIONS:
         raise VaultError("Слишком мало итераций PBKDF2 в файле")
@@ -109,7 +111,7 @@ def decrypt_obj(env: dict, name: str, password: str):
     check_envelope(env)
     salt, iters = _b64d(env["salt"]), int(env["iter"])
     try:
-        plain = AESGCM(derive_key(password, salt, iters)).decrypt(_b64d(env["iv"]), _b64d(env["ct"]), aad(name))
+        plain = AESGCM(derive_key(password, salt, iters)).decrypt(_b64d(env["iv"]), _b64d(env["ct"]), aad(name, env["v"]))
     except InvalidTag:
         raise WrongPassword(WRONG_MSG.format(name=name)) from None
     return json.loads(plain.decode("utf-8"))

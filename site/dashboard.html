@@ -1,0 +1,56 @@
+<!-- Разметка дашборда. Публикуется ТОЛЬКО зашифрованной (ui.json.enc), вставляется после входа. -->
+<div id="test-banner" class="test-banner" hidden>🧪 ТЕСТОВЫЕ ДАННЫЕ — не настоящая история</div>
+
+<header class="wrap" id="app-header">
+  <div class="head-row">
+    <h1>Реферальная программа Uzum Tezkor — мониторинг</h1>
+    <button type="button" id="logout" class="logout">Выйти</button>
+  </div>
+  <div class="meta">
+    <div><span class="k">Последняя проверка:</span> <span id="last-check">—</span> <span id="last-status" class="badge"></span></div>
+    <div><span class="k">Последнее изменение:</span> <span id="last-change">—</span></div>
+    <div id="history-start" class="hint"></div>
+  </div>
+</header>
+
+<main class="wrap" id="app-main">
+  <div id="error" class="error" hidden></div>
+
+  <section class="card" id="block-table">
+    <h2>Бонусы сейчас</h2>
+    <p class="hint">Максимальный бонус за приглашённого курьера и условие. <span class="legend-changed">Подсвечено</span> — изменилось за последние 7 дней.</p>
+    <div class="table-scroll" id="table-scroll"><table id="current-table"></table></div>
+    <p class="scroll-hint">← Таблицу можно прокрутить вбок, город остаётся на месте →</p>
+  </section>
+
+  <section class="card" id="block-history">
+    <h2>Бонус во времени</h2>
+    <div class="filters">
+      <label>Город <select id="f-city"></select></label>
+      <label>Транспорт <select id="f-transport"></select></label>
+    </div>
+    <div class="chart-box"><canvas id="history-chart"></canvas></div>
+  </section>
+
+  <section class="card" id="block-bars">
+    <h2>Максимальный бонус по городам</h2>
+    <div class="chart-box tall"><canvas id="bar-chart"></canvas></div>
+  </section>
+
+  <section class="card" id="block-log">
+    <h2>Журнал изменений</h2>
+    <div class="filters">
+      <label>Город <select id="f-log-city"></select></label>
+    </div>
+    <ul id="change-log" class="log"></ul>
+  </section>
+
+  <section class="card" id="block-offices">
+    <h2>Офисы</h2>
+    <div id="offices" class="offices"></div>
+  </section>
+</main>
+<footer class="wrap hint" id="app-footer">
+  Данные: <a href="https://referral.uzumtezkor.uz/" rel="noopener" target="_blank">referral.uzumtezkor.uz</a>, проверка раз в день в 10:00 (Ташкент).
+  Неофициальный мониторинг.
+</footer>
