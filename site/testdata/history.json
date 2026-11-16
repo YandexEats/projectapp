@@ -1,220 +1,13 @@
 [
   {
-    "cities": {
-      "tashkent": {
-        "name_ru": "Ташкент",
-        "name_uz": null,
-        "transports": {
-          "moto": [
-            {
-              "days": 30,
-              "orders": 120,
-              "bonus": 1200000
-            }
-          ],
-          "car": [
-            {
-              "days": 30,
-              "orders": 120,
-              "bonus": 1200000
-            }
-          ],
-          "ebike": [
-            {
-              "days": 30,
-              "orders": 120,
-              "bonus": 900000
-            }
-          ],
-          "bike": [
-            {
-              "days": 30,
-              "orders": 120,
-              "bonus": 900000
-            }
-          ],
-          "walking": []
-        }
-      },
-      "samarkand": {
-        "name_ru": "Самарканд",
-        "name_uz": null,
-        "transports": {
-          "moto": [
-            {
-              "days": 30,
-              "orders": 120,
-              "bonus": 1200000
-            }
-          ],
-          "car": [
-            {
-              "days": 30,
-              "orders": 120,
-              "bonus": 1200000
-            }
-          ],
-          "ebike": [
-            {
-              "days": 30,
-              "orders": 120,
-              "bonus": 900000
-            }
-          ],
-          "bike": [
-            {
-              "days": 30,
-              "orders": 120,
-              "bonus": 900000
-            }
-          ],
-          "walking": []
-        }
-      },
-      "andijan": {
-        "name_ru": "Андижан",
-        "name_uz": null,
-        "transports": {
-          "moto": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 1200000
-            }
-          ],
-          "car": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 1200000
-            }
-          ],
-          "ebike": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 900000
-            }
-          ],
-          "bike": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 900000
-            }
-          ],
-          "walking": []
-        }
-      },
-      "namangan": {
-        "name_ru": "Наманган",
-        "name_uz": null,
-        "transports": {
-          "moto": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 500000
-            }
-          ],
-          "car": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 500000
-            }
-          ],
-          "ebike": [],
-          "bike": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 500000
-            }
-          ],
-          "walking": []
-        }
-      },
-      "fergana": {
-        "name_ru": "Фергана",
-        "name_uz": null,
-        "transports": {
-          "moto": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 500000
-            }
-          ],
-          "car": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 500000
-            }
-          ],
-          "ebike": [],
-          "bike": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 500000
-            }
-          ],
-          "walking": []
-        }
-      },
-      "bukhara": {
-        "name_ru": "Бухара",
-        "name_uz": null,
-        "transports": {
-          "moto": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 500000
-            }
-          ],
-          "car": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 500000
-            }
-          ],
-          "ebike": [],
-          "bike": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 500000
-            }
-          ],
-          "walking": []
-        }
-      }
-    },
-    "offices": null,
-    "hero_text": null,
-    "notes": null,
-    "city_list": [
-      "tashkent",
-      "samarkand",
-      "andijan",
-      "namangan",
-      "fergana",
-      "bukhara"
-    ],
     "date": "2026-06-01",
     "checked_at": "2026-06-01T05:00:00+00:00",
     "bundle_file": "/assets/index-TEST0001.js",
-    "method": "bundle"
-  },
-  {
+    "method": "bundle",
     "cities": {
       "tashkent": {
         "name_ru": "Ташкент",
-        "name_uz": null,
+        "name_uz": "Toshkent",
         "transports": {
           "moto": [
             {
@@ -249,7 +42,7 @@
       },
       "samarkand": {
         "name_ru": "Самарканд",
-        "name_uz": null,
+        "name_uz": "Samarqand",
         "transports": {
           "moto": [
             {
@@ -276,41 +69,6 @@
             {
               "days": 30,
               "orders": 120,
-              "bonus": 900000
-            }
-          ],
-          "walking": []
-        }
-      },
-      "andijan": {
-        "name_ru": "Андижан",
-        "name_uz": null,
-        "transports": {
-          "moto": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 1200000
-            }
-          ],
-          "car": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 1200000
-            }
-          ],
-          "ebike": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 900000
-            }
-          ],
-          "bike": [
-            {
-              "days": 30,
-              "orders": 80,
               "bonus": 900000
             }
           ],
@@ -319,13 +77,13 @@
       },
       "namangan": {
         "name_ru": "Наманган",
-        "name_uz": null,
+        "name_uz": "Namangan",
         "transports": {
           "moto": [
             {
               "days": 30,
               "orders": 80,
-              "bonus": 700000
+              "bonus": 500000
             }
           ],
           "car": [
@@ -346,9 +104,44 @@
           "walking": []
         }
       },
+      "andijan": {
+        "name_ru": "Андижан",
+        "name_uz": "Andijon",
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 1200000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 1200000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 900000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 900000
+            }
+          ],
+          "walking": []
+        }
+      },
       "fergana": {
         "name_ru": "Фергана",
-        "name_uz": null,
+        "name_uz": "Farg'ona",
         "transports": {
           "moto": [
             {
@@ -377,7 +170,7 @@
       },
       "bukhara": {
         "name_ru": "Бухара",
-        "name_uz": null,
+        "name_uz": "Buxoro",
         "transports": {
           "moto": [
             {
@@ -405,27 +198,98 @@
         }
       }
     },
-    "offices": null,
-    "hero_text": null,
-    "notes": null,
+    "hero_text": {
+      "ru": "до 1 200 000 сум",
+      "uz": "1 200 000 so'mgacha"
+    },
+    "notes": {
+      "tashkent_ru": "Учитываются также ранее оформленные курьеры в Ташкенте, с момента последнего заказа которых прошло 60 дней и более, кроме заблокированных.",
+      "tashkent_uz": "Toshkentda avval ro'yxatdan o'tgan kuryerlar ham hisobga olinadi — oxirgi yetkazilgan buyurtmasidan 60 kun yoki ko'proq muddat o'tgan bo'lsa, servisda bloklangan kuryerlardan tashqari."
+    },
+    "offices": {
+      "tashkent": {
+        "address": "г. Ташкент, ул. Богибустон, 3А",
+        "address_uz": "Toshkent shahri, Bog‘ibuston, 3A",
+        "hours": "10:00–19:00",
+        "days": "пн–пн",
+        "map": "https://yandex.uz/maps?text=%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%20%D0%A2%D0%B0%D1%88%D0%BA%D0%B5%D0%BD%D1%82%2C%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%91%D0%BE%D0%B3%D0%B8%D0%B1%D1%83%D1%81%D1%82%D0%BE%D0%BD%2C%203%D0%90"
+      },
+      "samarkand": {
+        "address": "ул. Фирдоуси, 1, МСГ Улугбек, Самарканд",
+        "address_uz": "O'zbekiston mahalla fuqarolar yig'ini, Firdavsiy ko'chasi, 1-uy, Samarqand",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/10334/samarkand/?from=api-maps&ll=66.942246%2C39.654204&mode=search&text=%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%A4%D0%B8%D1%80%D0%B4%D0%BE%D1%83%D1%81%D0%B8%2C%201"
+      },
+      "namangan": {
+        "address": "г. Наманган, 8-й проезд Туракургон, 9",
+        "address_uz": "Namangan shahri, To'raqo'rg'on 8-tor ko'chasi, 9-uy",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/-/CDVsaQZA"
+      },
+      "andijan": {
+        "address": "Ташкентская улица, 73А, Андижан",
+        "address_uz": "Toshkent ko'chasi, 73A-uy, Andijon",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/10329/andijan/?from=api-maps&ll=72.345987%2C40.783239&mode=search&text=%D0%A2%D0%B0%D1%88%D0%BA%D0%B5%D0%BD%D1%82%D1%81%D0%BA%D0%B0%D1%8F%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%2C%2073%D0%90"
+      },
+      "fergana": {
+        "address": "проспект Алишера Навои, 6, Фергана",
+        "address_uz": "Alisher Navoiy shoh ko'chasi, 6-uy, Farg'ona",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/10336/fergana/?ll=71.793673%2C40.381411&mode=whatshere&utm_source=share&whatshere%5Bpoint%5D=71.793762%2C40.381438&whatshere%5Bzoom%5D=17&z=19"
+      },
+      "bukhara": {
+        "address": "г. Бухара, ул. Каюма Муртазаева, 2",
+        "address_uz": "Buxoro shahri, Qayum Murtazoyev ko'chasi, 2-uy",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/-/CDdIIPJE"
+      }
+    },
     "city_list": [
       "tashkent",
       "samarkand",
-      "andijan",
       "namangan",
+      "andijan",
       "fergana",
       "bukhara"
     ],
+    "transport_types": {
+      "moto": {
+        "ru": "Мото",
+        "uz": "Moto"
+      },
+      "car": {
+        "ru": "Авто",
+        "uz": "Avto"
+      },
+      "ebike": {
+        "ru": "Электро - вело",
+        "uz": "Elektro velo"
+      },
+      "bike": {
+        "ru": "Вело",
+        "uz": "Velo"
+      },
+      "walking": {
+        "ru": "Пешие",
+        "uz": "Piyoda"
+      }
+    }
+  },
+  {
     "date": "2026-07-15",
     "checked_at": "2026-07-15T05:00:00+00:00",
     "bundle_file": "/assets/index-TEST20260715.js",
-    "method": "bundle"
-  },
-  {
+    "method": "bundle",
     "cities": {
       "tashkent": {
         "name_ru": "Ташкент",
-        "name_uz": null,
+        "name_uz": "Toshkent",
         "transports": {
           "moto": [
             {
@@ -460,7 +324,7 @@
       },
       "samarkand": {
         "name_ru": "Самарканд",
-        "name_uz": null,
+        "name_uz": "Samarqand",
         "transports": {
           "moto": [
             {
@@ -487,41 +351,6 @@
             {
               "days": 30,
               "orders": 120,
-              "bonus": 900000
-            }
-          ],
-          "walking": []
-        }
-      },
-      "andijan": {
-        "name_ru": "Андижан",
-        "name_uz": null,
-        "transports": {
-          "moto": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 1200000
-            }
-          ],
-          "car": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 1200000
-            }
-          ],
-          "ebike": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 900000
-            }
-          ],
-          "bike": [
-            {
-              "days": 30,
-              "orders": 80,
               "bonus": 900000
             }
           ],
@@ -530,7 +359,7 @@
       },
       "namangan": {
         "name_ru": "Наманган",
-        "name_uz": null,
+        "name_uz": "Namangan",
         "transports": {
           "moto": [
             {
@@ -557,9 +386,44 @@
           "walking": []
         }
       },
+      "andijan": {
+        "name_ru": "Андижан",
+        "name_uz": "Andijon",
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 1200000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 1200000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 900000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 900000
+            }
+          ],
+          "walking": []
+        }
+      },
       "fergana": {
         "name_ru": "Фергана",
-        "name_uz": null,
+        "name_uz": "Farg'ona",
         "transports": {
           "moto": [
             {
@@ -588,7 +452,7 @@
       },
       "bukhara": {
         "name_ru": "Бухара",
-        "name_uz": null,
+        "name_uz": "Buxoro",
         "transports": {
           "moto": [
             {
@@ -600,7 +464,7 @@
           "car": [
             {
               "days": 30,
-              "orders": 100,
+              "orders": 80,
               "bonus": 500000
             }
           ],
@@ -616,27 +480,98 @@
         }
       }
     },
-    "offices": null,
-    "hero_text": null,
-    "notes": null,
+    "hero_text": {
+      "ru": "до 1 200 000 сум",
+      "uz": "1 200 000 so'mgacha"
+    },
+    "notes": {
+      "tashkent_ru": "Учитываются также ранее оформленные курьеры в Ташкенте, с момента последнего заказа которых прошло 60 дней и более, кроме заблокированных.",
+      "tashkent_uz": "Toshkentda avval ro'yxatdan o'tgan kuryerlar ham hisobga olinadi — oxirgi yetkazilgan buyurtmasidan 60 kun yoki ko'proq muddat o'tgan bo'lsa, servisda bloklangan kuryerlardan tashqari."
+    },
+    "offices": {
+      "tashkent": {
+        "address": "г. Ташкент, ул. Богибустон, 3А",
+        "address_uz": "Toshkent shahri, Bog‘ibuston, 3A",
+        "hours": "10:00–19:00",
+        "days": "пн–пн",
+        "map": "https://yandex.uz/maps?text=%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%20%D0%A2%D0%B0%D1%88%D0%BA%D0%B5%D0%BD%D1%82%2C%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%91%D0%BE%D0%B3%D0%B8%D0%B1%D1%83%D1%81%D1%82%D0%BE%D0%BD%2C%203%D0%90"
+      },
+      "samarkand": {
+        "address": "ул. Фирдоуси, 1, МСГ Улугбек, Самарканд",
+        "address_uz": "O'zbekiston mahalla fuqarolar yig'ini, Firdavsiy ko'chasi, 1-uy, Samarqand",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/10334/samarkand/?from=api-maps&ll=66.942246%2C39.654204&mode=search&text=%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%A4%D0%B8%D1%80%D0%B4%D0%BE%D1%83%D1%81%D0%B8%2C%201"
+      },
+      "namangan": {
+        "address": "г. Наманган, 8-й проезд Туракургон, 9",
+        "address_uz": "Namangan shahri, To'raqo'rg'on 8-tor ko'chasi, 9-uy",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/-/CDVsaQZA"
+      },
+      "andijan": {
+        "address": "Ташкентская улица, 73А, Андижан",
+        "address_uz": "Toshkent ko'chasi, 73A-uy, Andijon",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/10329/andijan/?from=api-maps&ll=72.345987%2C40.783239&mode=search&text=%D0%A2%D0%B0%D1%88%D0%BA%D0%B5%D0%BD%D1%82%D1%81%D0%BA%D0%B0%D1%8F%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%2C%2073%D0%90"
+      },
+      "fergana": {
+        "address": "проспект Алишера Навои, 6, Фергана",
+        "address_uz": "Alisher Navoiy shoh ko'chasi, 6-uy, Farg'ona",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/10336/fergana/?ll=71.793673%2C40.381411&mode=whatshere&utm_source=share&whatshere%5Bpoint%5D=71.793762%2C40.381438&whatshere%5Bzoom%5D=17&z=19"
+      },
+      "bukhara": {
+        "address": "г. Бухара, ул. Каюма Муртазаева, 2",
+        "address_uz": "Buxoro shahri, Qayum Murtazoyev ko'chasi, 2-uy",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/-/CDdIIPJE"
+      }
+    },
     "city_list": [
       "tashkent",
       "samarkand",
-      "andijan",
       "namangan",
+      "andijan",
       "fergana",
       "bukhara"
     ],
+    "transport_types": {
+      "moto": {
+        "ru": "Мото",
+        "uz": "Moto"
+      },
+      "car": {
+        "ru": "Авто",
+        "uz": "Avto"
+      },
+      "ebike": {
+        "ru": "Электро - вело",
+        "uz": "Elektro velo"
+      },
+      "bike": {
+        "ru": "Вело",
+        "uz": "Velo"
+      },
+      "walking": {
+        "ru": "Пешие",
+        "uz": "Piyoda"
+      }
+    }
+  },
+  {
     "date": "2026-08-20",
     "checked_at": "2026-08-20T05:00:00+00:00",
     "bundle_file": "/assets/index-TEST20260820.js",
-    "method": "bundle"
-  },
-  {
+    "method": "bundle",
     "cities": {
       "tashkent": {
         "name_ru": "Ташкент",
-        "name_uz": null,
+        "name_uz": "Toshkent",
         "transports": {
           "moto": [
             {
@@ -671,7 +606,7 @@
       },
       "samarkand": {
         "name_ru": "Самарканд",
-        "name_uz": null,
+        "name_uz": "Samarqand",
         "transports": {
           "moto": [
             {
@@ -698,41 +633,6 @@
             {
               "days": 30,
               "orders": 120,
-              "bonus": 900000
-            }
-          ],
-          "walking": []
-        }
-      },
-      "andijan": {
-        "name_ru": "Андижан",
-        "name_uz": null,
-        "transports": {
-          "moto": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 1200000
-            }
-          ],
-          "car": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 1200000
-            }
-          ],
-          "ebike": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 900000
-            }
-          ],
-          "bike": [
-            {
-              "days": 30,
-              "orders": 80,
               "bonus": 900000
             }
           ],
@@ -741,7 +641,7 @@
       },
       "namangan": {
         "name_ru": "Наманган",
-        "name_uz": null,
+        "name_uz": "Namangan",
         "transports": {
           "moto": [
             {
@@ -757,13 +657,7 @@
               "bonus": 500000
             }
           ],
-          "ebike": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 600000
-            }
-          ],
+          "ebike": [],
           "bike": [
             {
               "days": 30,
@@ -774,9 +668,44 @@
           "walking": []
         }
       },
+      "andijan": {
+        "name_ru": "Андижан",
+        "name_uz": "Andijon",
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 1200000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 1200000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 900000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 900000
+            }
+          ],
+          "walking": []
+        }
+      },
       "fergana": {
         "name_ru": "Фергана",
-        "name_uz": null,
+        "name_uz": "Farg'ona",
         "transports": {
           "moto": [
             {
@@ -805,7 +734,7 @@
       },
       "bukhara": {
         "name_ru": "Бухара",
-        "name_uz": null,
+        "name_uz": "Buxoro",
         "transports": {
           "moto": [
             {
@@ -833,33 +762,104 @@
         }
       }
     },
-    "offices": null,
-    "hero_text": null,
-    "notes": null,
+    "hero_text": {
+      "ru": "до 1 200 000 сум",
+      "uz": "1 200 000 so'mgacha"
+    },
+    "notes": {
+      "tashkent_ru": "Учитываются также ранее оформленные курьеры в Ташкенте, с момента последнего заказа которых прошло 60 дней и более, кроме заблокированных.",
+      "tashkent_uz": "Toshkentda avval ro'yxatdan o'tgan kuryerlar ham hisobga olinadi — oxirgi yetkazilgan buyurtmasidan 60 kun yoki ko'proq muddat o'tgan bo'lsa, servisda bloklangan kuryerlardan tashqari."
+    },
+    "offices": {
+      "tashkent": {
+        "address": "г. Ташкент, ул. Богибустон, 3А",
+        "address_uz": "Toshkent shahri, Bog‘ibuston, 3A",
+        "hours": "10:00–19:00",
+        "days": "пн–пн",
+        "map": "https://yandex.uz/maps?text=%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%20%D0%A2%D0%B0%D1%88%D0%BA%D0%B5%D0%BD%D1%82%2C%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%91%D0%BE%D0%B3%D0%B8%D0%B1%D1%83%D1%81%D1%82%D0%BE%D0%BD%2C%203%D0%90"
+      },
+      "samarkand": {
+        "address": "ул. Фирдоуси, 1, МСГ Улугбек, Самарканд",
+        "address_uz": "O'zbekiston mahalla fuqarolar yig'ini, Firdavsiy ko'chasi, 1-uy, Samarqand",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/10334/samarkand/?from=api-maps&ll=66.942246%2C39.654204&mode=search&text=%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%A4%D0%B8%D1%80%D0%B4%D0%BE%D1%83%D1%81%D0%B8%2C%201"
+      },
+      "namangan": {
+        "address": "г. Наманган, 8-й проезд Туракургон, 9",
+        "address_uz": "Namangan shahri, To'raqo'rg'on 8-tor ko'chasi, 9-uy",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/-/CDVsaQZA"
+      },
+      "andijan": {
+        "address": "Ташкентская улица, 73А, Андижан",
+        "address_uz": "Toshkent ko'chasi, 73A-uy, Andijon",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/10329/andijan/?from=api-maps&ll=72.345987%2C40.783239&mode=search&text=%D0%A2%D0%B0%D1%88%D0%BA%D0%B5%D0%BD%D1%82%D1%81%D0%BA%D0%B0%D1%8F%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%2C%2073%D0%90"
+      },
+      "fergana": {
+        "address": "проспект Алишера Навои, 6, Фергана",
+        "address_uz": "Alisher Navoiy shoh ko'chasi, 6-uy, Farg'ona",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/10336/fergana/?ll=71.793673%2C40.381411&mode=whatshere&utm_source=share&whatshere%5Bpoint%5D=71.793762%2C40.381438&whatshere%5Bzoom%5D=17&z=19"
+      },
+      "bukhara": {
+        "address": "г. Бухара, ул. Каюма Муртазаева, 2",
+        "address_uz": "Buxoro shahri, Qayum Murtazoyev ko'chasi, 2-uy",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/-/CDdIIPJE"
+      }
+    },
     "city_list": [
       "tashkent",
       "samarkand",
-      "andijan",
       "namangan",
+      "andijan",
       "fergana",
       "bukhara"
     ],
+    "transport_types": {
+      "moto": {
+        "ru": "Мото",
+        "uz": "Moto"
+      },
+      "car": {
+        "ru": "Авто",
+        "uz": "Avto"
+      },
+      "ebike": {
+        "ru": "Электро - вело",
+        "uz": "Elektro velo"
+      },
+      "bike": {
+        "ru": "Вело",
+        "uz": "Velo"
+      },
+      "walking": {
+        "ru": "Пешие",
+        "uz": "Piyoda"
+      }
+    }
+  },
+  {
     "date": "2026-09-10",
     "checked_at": "2026-09-10T05:00:00+00:00",
     "bundle_file": "/assets/index-TEST20260910.js",
-    "method": "bundle"
-  },
-  {
+    "method": "bundle",
     "cities": {
       "tashkent": {
         "name_ru": "Ташкент",
-        "name_uz": null,
+        "name_uz": "Toshkent",
         "transports": {
           "moto": [
             {
               "days": 30,
               "orders": 120,
-              "bonus": 1500000
+              "bonus": 1200000
             }
           ],
           "car": [
@@ -888,13 +888,13 @@
       },
       "samarkand": {
         "name_ru": "Самарканд",
-        "name_uz": null,
+        "name_uz": "Samarqand",
         "transports": {
           "moto": [
             {
               "days": 30,
               "orders": 120,
-              "bonus": 1000000
+              "bonus": 1200000
             }
           ],
           "car": [
@@ -915,41 +915,6 @@
             {
               "days": 30,
               "orders": 120,
-              "bonus": 900000
-            }
-          ],
-          "walking": []
-        }
-      },
-      "andijan": {
-        "name_ru": "Андижан",
-        "name_uz": null,
-        "transports": {
-          "moto": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 1200000
-            }
-          ],
-          "car": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 1200000
-            }
-          ],
-          "ebike": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 900000
-            }
-          ],
-          "bike": [
-            {
-              "days": 30,
-              "orders": 80,
               "bonus": 900000
             }
           ],
@@ -958,7 +923,7 @@
       },
       "namangan": {
         "name_ru": "Наманган",
-        "name_uz": null,
+        "name_uz": "Namangan",
         "transports": {
           "moto": [
             {
@@ -991,9 +956,44 @@
           "walking": []
         }
       },
+      "andijan": {
+        "name_ru": "Андижан",
+        "name_uz": "Andijon",
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 1200000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 1200000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 900000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 900000
+            }
+          ],
+          "walking": []
+        }
+      },
       "fergana": {
         "name_ru": "Фергана",
-        "name_uz": null,
+        "name_uz": "Farg'ona",
         "transports": {
           "moto": [
             {
@@ -1022,7 +1022,7 @@
       },
       "bukhara": {
         "name_ru": "Бухара",
-        "name_uz": null,
+        "name_uz": "Buxoro",
         "transports": {
           "moto": [
             {
@@ -1050,27 +1050,98 @@
         }
       }
     },
-    "offices": null,
-    "hero_text": null,
-    "notes": null,
+    "hero_text": {
+      "ru": "до 1 200 000 сум",
+      "uz": "1 200 000 so'mgacha"
+    },
+    "notes": {
+      "tashkent_ru": "Учитываются также ранее оформленные курьеры в Ташкенте, с момента последнего заказа которых прошло 60 дней и более, кроме заблокированных.",
+      "tashkent_uz": "Toshkentda avval ro'yxatdan o'tgan kuryerlar ham hisobga olinadi — oxirgi yetkazilgan buyurtmasidan 60 kun yoki ko'proq muddat o'tgan bo'lsa, servisda bloklangan kuryerlardan tashqari."
+    },
+    "offices": {
+      "tashkent": {
+        "address": "г. Ташкент, ул. Богибустон, 3А",
+        "address_uz": "Toshkent shahri, Bog‘ibuston, 3A",
+        "hours": "10:00–19:00",
+        "days": "пн–пн",
+        "map": "https://yandex.uz/maps?text=%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%20%D0%A2%D0%B0%D1%88%D0%BA%D0%B5%D0%BD%D1%82%2C%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%91%D0%BE%D0%B3%D0%B8%D0%B1%D1%83%D1%81%D1%82%D0%BE%D0%BD%2C%203%D0%90"
+      },
+      "samarkand": {
+        "address": "ул. Фирдоуси, 1, МСГ Улугбек, Самарканд",
+        "address_uz": "O'zbekiston mahalla fuqarolar yig'ini, Firdavsiy ko'chasi, 1-uy, Samarqand",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/10334/samarkand/?from=api-maps&ll=66.942246%2C39.654204&mode=search&text=%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%A4%D0%B8%D1%80%D0%B4%D0%BE%D1%83%D1%81%D0%B8%2C%201"
+      },
+      "namangan": {
+        "address": "г. Наманган, 8-й проезд Туракургон, 9",
+        "address_uz": "Namangan shahri, To'raqo'rg'on 8-tor ko'chasi, 9-uy",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/-/CDVsaQZA"
+      },
+      "andijan": {
+        "address": "Ташкентская улица, 73А, Андижан",
+        "address_uz": "Toshkent ko'chasi, 73A-uy, Andijon",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/10329/andijan/?from=api-maps&ll=72.345987%2C40.783239&mode=search&text=%D0%A2%D0%B0%D1%88%D0%BA%D0%B5%D0%BD%D1%82%D1%81%D0%BA%D0%B0%D1%8F%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%2C%2073%D0%90"
+      },
+      "fergana": {
+        "address": "проспект Алишера Навои, 6, Фергана",
+        "address_uz": "Alisher Navoiy shoh ko'chasi, 6-uy, Farg'ona",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/10336/fergana/?ll=71.793673%2C40.381411&mode=whatshere&utm_source=share&whatshere%5Bpoint%5D=71.793762%2C40.381438&whatshere%5Bzoom%5D=17&z=19"
+      },
+      "bukhara": {
+        "address": "г. Бухара, ул. Каюма Муртазаева, 2",
+        "address_uz": "Buxoro shahri, Qayum Murtazoyev ko'chasi, 2-uy",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/-/CDdIIPJE"
+      }
+    },
     "city_list": [
       "tashkent",
       "samarkand",
-      "andijan",
       "namangan",
+      "andijan",
       "fergana",
       "bukhara"
     ],
+    "transport_types": {
+      "moto": {
+        "ru": "Мото",
+        "uz": "Moto"
+      },
+      "car": {
+        "ru": "Авто",
+        "uz": "Avto"
+      },
+      "ebike": {
+        "ru": "Электро - вело",
+        "uz": "Elektro velo"
+      },
+      "bike": {
+        "ru": "Вело",
+        "uz": "Velo"
+      },
+      "walking": {
+        "ru": "Пешие",
+        "uz": "Piyoda"
+      }
+    }
+  },
+  {
     "date": "2026-10-05",
     "checked_at": "2026-10-05T05:00:00+00:00",
     "bundle_file": "/assets/index-TEST20261005.js",
-    "method": "bundle"
-  },
-  {
+    "method": "bundle",
     "cities": {
       "tashkent": {
         "name_ru": "Ташкент",
-        "name_uz": null,
+        "name_uz": "Toshkent",
         "transports": {
           "moto": [
             {
@@ -1105,7 +1176,7 @@
       },
       "samarkand": {
         "name_ru": "Самарканд",
-        "name_uz": null,
+        "name_uz": "Samarqand",
         "transports": {
           "moto": [
             {
@@ -1138,9 +1209,332 @@
           "walking": []
         }
       },
+      "namangan": {
+        "name_ru": "Наманган",
+        "name_uz": "Namangan",
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 700000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 600000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "walking": []
+        }
+      },
       "andijan": {
         "name_ru": "Андижан",
-        "name_uz": null,
+        "name_uz": "Andijon",
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 1200000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 1200000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 900000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 900000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "fergana": {
+        "name_ru": "Фергана",
+        "name_uz": "Farg'ona",
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "ebike": [],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "bukhara": {
+        "name_ru": "Бухара",
+        "name_uz": "Buxoro",
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 100,
+              "bonus": 500000
+            }
+          ],
+          "ebike": [],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "walking": []
+        }
+      }
+    },
+    "hero_text": {
+      "ru": "до 1 200 000 сум",
+      "uz": "1 200 000 so'mgacha"
+    },
+    "notes": {
+      "tashkent_ru": "Учитываются также ранее оформленные курьеры в Ташкенте, с момента последнего заказа которых прошло 60 дней и более, кроме заблокированных.",
+      "tashkent_uz": "Toshkentda avval ro'yxatdan o'tgan kuryerlar ham hisobga olinadi — oxirgi yetkazilgan buyurtmasidan 60 kun yoki ko'proq muddat o'tgan bo'lsa, servisda bloklangan kuryerlardan tashqari."
+    },
+    "offices": {
+      "tashkent": {
+        "address": "г. Ташкент, ул. Богибустон, 3А",
+        "address_uz": "Toshkent shahri, Bog‘ibuston, 3A",
+        "hours": "10:00–19:00",
+        "days": "пн–пн",
+        "map": "https://yandex.uz/maps?text=%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%20%D0%A2%D0%B0%D1%88%D0%BA%D0%B5%D0%BD%D1%82%2C%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%91%D0%BE%D0%B3%D0%B8%D0%B1%D1%83%D1%81%D1%82%D0%BE%D0%BD%2C%203%D0%90"
+      },
+      "samarkand": {
+        "address": "ул. Фирдоуси, 1, МСГ Улугбек, Самарканд",
+        "address_uz": "O'zbekiston mahalla fuqarolar yig'ini, Firdavsiy ko'chasi, 1-uy, Samarqand",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/10334/samarkand/?from=api-maps&ll=66.942246%2C39.654204&mode=search&text=%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%A4%D0%B8%D1%80%D0%B4%D0%BE%D1%83%D1%81%D0%B8%2C%201"
+      },
+      "namangan": {
+        "address": "г. Наманган, 8-й проезд Туракургон, 9",
+        "address_uz": "Namangan shahri, To'raqo'rg'on 8-tor ko'chasi, 9-uy",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/-/CDVsaQZA"
+      },
+      "andijan": {
+        "address": "Ташкентская улица, 73А, Андижан",
+        "address_uz": "Toshkent ko'chasi, 73A-uy, Andijon",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/10329/andijan/?from=api-maps&ll=72.345987%2C40.783239&mode=search&text=%D0%A2%D0%B0%D1%88%D0%BA%D0%B5%D0%BD%D1%82%D1%81%D0%BA%D0%B0%D1%8F%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%2C%2073%D0%90"
+      },
+      "fergana": {
+        "address": "проспект Алишера Навои, 6, Фергана",
+        "address_uz": "Alisher Navoiy shoh ko'chasi, 6-uy, Farg'ona",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/10336/fergana/?ll=71.793673%2C40.381411&mode=whatshere&utm_source=share&whatshere%5Bpoint%5D=71.793762%2C40.381438&whatshere%5Bzoom%5D=17&z=19"
+      },
+      "bukhara": {
+        "address": "г. Бухара, ул. Каюма Муртазаева, 2",
+        "address_uz": "Buxoro shahri, Qayum Murtazoyev ko'chasi, 2-uy",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/-/CDdIIPJE"
+      }
+    },
+    "city_list": [
+      "tashkent",
+      "samarkand",
+      "namangan",
+      "andijan",
+      "fergana",
+      "bukhara"
+    ],
+    "transport_types": {
+      "moto": {
+        "ru": "Мото",
+        "uz": "Moto"
+      },
+      "car": {
+        "ru": "Авто",
+        "uz": "Avto"
+      },
+      "ebike": {
+        "ru": "Электро - вело",
+        "uz": "Elektro velo"
+      },
+      "bike": {
+        "ru": "Вело",
+        "uz": "Velo"
+      },
+      "walking": {
+        "ru": "Пешие",
+        "uz": "Piyoda"
+      }
+    }
+  },
+  {
+    "date": "2026-11-12",
+    "checked_at": "2026-11-12T05:00:00+00:00",
+    "bundle_file": "/assets/index-TEST20261112.js",
+    "method": "bundle",
+    "cities": {
+      "tashkent": {
+        "name_ru": "Ташкент",
+        "name_uz": "Toshkent",
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1500000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1200000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "samarkand": {
+        "name_ru": "Самарканд",
+        "name_uz": "Samarqand",
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1000000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 1200000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 120,
+              "bonus": 900000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "namangan": {
+        "name_ru": "Наманган",
+        "name_uz": "Namangan",
+        "transports": {
+          "moto": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 700000
+            }
+          ],
+          "car": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "ebike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 600000
+            }
+          ],
+          "bike": [
+            {
+              "days": 30,
+              "orders": 80,
+              "bonus": 500000
+            }
+          ],
+          "walking": []
+        }
+      },
+      "andijan": {
+        "name_ru": "Андижан",
+        "name_uz": "Andijon",
         "transports": {
           "moto": [
             {
@@ -1178,44 +1572,9 @@
           "walking": []
         }
       },
-      "namangan": {
-        "name_ru": "Наманган",
-        "name_uz": null,
-        "transports": {
-          "moto": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 700000
-            }
-          ],
-          "car": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 500000
-            }
-          ],
-          "ebike": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 600000
-            }
-          ],
-          "bike": [
-            {
-              "days": 30,
-              "orders": 80,
-              "bonus": 500000
-            }
-          ],
-          "walking": []
-        }
-      },
       "fergana": {
         "name_ru": "Фергана",
-        "name_uz": null,
+        "name_uz": "Farg'ona",
         "transports": {
           "moto": [
             {
@@ -1238,7 +1597,7 @@
       },
       "bukhara": {
         "name_ru": "Бухара",
-        "name_uz": null,
+        "name_uz": "Buxoro",
         "transports": {
           "moto": [
             {
@@ -1266,20 +1625,87 @@
         }
       }
     },
-    "offices": null,
-    "hero_text": null,
-    "notes": null,
+    "hero_text": {
+      "ru": "до 1 200 000 сум",
+      "uz": "1 200 000 so'mgacha"
+    },
+    "notes": {
+      "tashkent_ru": "Учитываются также ранее оформленные курьеры в Ташкенте, с момента последнего заказа которых прошло 60 дней и более, кроме заблокированных.",
+      "tashkent_uz": "Toshkentda avval ro'yxatdan o'tgan kuryerlar ham hisobga olinadi — oxirgi yetkazilgan buyurtmasidan 60 kun yoki ko'proq muddat o'tgan bo'lsa, servisda bloklangan kuryerlardan tashqari."
+    },
+    "offices": {
+      "tashkent": {
+        "address": "г. Ташкент, ул. Богибустон, 3А",
+        "address_uz": "Toshkent shahri, Bog‘ibuston, 3A",
+        "hours": "10:00–19:00",
+        "days": "пн–пн",
+        "map": "https://yandex.uz/maps?text=%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%20%D0%A2%D0%B0%D1%88%D0%BA%D0%B5%D0%BD%D1%82%2C%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%91%D0%BE%D0%B3%D0%B8%D0%B1%D1%83%D1%81%D1%82%D0%BE%D0%BD%2C%203%D0%90"
+      },
+      "samarkand": {
+        "address": "ул. Фирдоуси, 1, МСГ Улугбек, Самарканд",
+        "address_uz": "O'zbekiston mahalla fuqarolar yig'ini, Firdavsiy ko'chasi, 1-uy, Samarqand",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/10334/samarkand/?from=api-maps&ll=66.942246%2C39.654204&mode=search&text=%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%A4%D0%B8%D1%80%D0%B4%D0%BE%D1%83%D1%81%D0%B8%2C%201"
+      },
+      "namangan": {
+        "address": "г. Наманган, 8-й проезд Туракургон, 9",
+        "address_uz": "Namangan shahri, To'raqo'rg'on 8-tor ko'chasi, 9-uy",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/-/CDVsaQZA"
+      },
+      "andijan": {
+        "address": "Ташкентская улица, 73А, Андижан",
+        "address_uz": "Toshkent ko'chasi, 73A-uy, Andijon",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/10329/andijan/?from=api-maps&ll=72.345987%2C40.783239&mode=search&text=%D0%A2%D0%B0%D1%88%D0%BA%D0%B5%D0%BD%D1%82%D1%81%D0%BA%D0%B0%D1%8F%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%2C%2073%D0%90"
+      },
+      "fergana": {
+        "address": "проспект Алишера Навои, 6, Фергана",
+        "address_uz": "Alisher Navoiy shoh ko'chasi, 6-uy, Farg'ona",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/10336/fergana/?ll=71.793673%2C40.381411&mode=whatshere&utm_source=share&whatshere%5Bpoint%5D=71.793762%2C40.381438&whatshere%5Bzoom%5D=17&z=19"
+      },
+      "bukhara": {
+        "address": "г. Бухара, ул. Каюма Муртазаева, 2",
+        "address_uz": "Buxoro shahri, Qayum Murtazoyev ko'chasi, 2-uy",
+        "hours": "10:00–19:00",
+        "days": "пн–пт",
+        "map": "https://yandex.uz/maps/-/CDdIIPJE"
+      }
+    },
     "city_list": [
       "tashkent",
       "samarkand",
-      "andijan",
       "namangan",
+      "andijan",
       "fergana",
       "bukhara"
     ],
-    "date": "2026-11-12",
-    "checked_at": "2026-11-12T05:00:00+00:00",
-    "bundle_file": "/assets/index-TEST20261112.js",
-    "method": "bundle"
+    "transport_types": {
+      "moto": {
+        "ru": "Мото",
+        "uz": "Moto"
+      },
+      "car": {
+        "ru": "Авто",
+        "uz": "Avto"
+      },
+      "ebike": {
+        "ru": "Электро - вело",
+        "uz": "Elektro velo"
+      },
+      "bike": {
+        "ru": "Вело",
+        "uz": "Velo"
+      },
+      "walking": {
+        "ru": "Пешие",
+        "uz": "Piyoda"
+      }
+    }
   }
 ]
