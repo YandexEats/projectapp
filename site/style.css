@@ -86,5 +86,27 @@ select { font: inherit; font-size: 14px; padding: 6px 8px; border-radius: 8px; b
 .office b { display: block; margin-bottom: 3px; }
 .office a { color: var(--accent); }
 footer { padding-bottom: 28px; }
+
+[hidden] { display: none !important; }
+.gate { padding-top: 12vh; }
+.login { max-width: 380px; margin: 0 auto; display: grid; gap: 10px; padding: 20px; }
+.login-title { font-size: 18px; margin: 0 0 4px; }
+.login-label { font-weight: 600; font-size: 14px; }
+.login input[type="password"] {
+  font: inherit; font-size: 16px; /* 16px — iOS не увеличивает страницу при фокусе */
+  padding: 11px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: var(--text); width: 100%;
+}
+.login input[type="password"]:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.remember { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); }
+.remember input { width: 18px; height: 18px; accent-color: var(--accent); }
+.login button, .logout {
+  font: inherit; font-weight: 600; cursor: pointer; border-radius: 10px; border: 1px solid var(--accent);
+}
+.login button { font-size: 16px; padding: 11px; background: var(--accent); color: #fff; }
+.login button:disabled { opacity: .6; cursor: progress; }
+.login-error { margin: 0; color: var(--down); background: var(--down-bg); padding: 8px 10px; border-radius: 8px; font-size: 14px; }
+.gate-status { text-align: center; }
+.head-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.logout { flex: none; font-size: 13px; padding: 5px 12px; background: transparent; color: var(--accent); margin-top: 1px; }
 a { color: var(--accent); }
 @media (min-width: 700px) { h1 { font-size: 24px; } .chart-box { height: 340px; } }

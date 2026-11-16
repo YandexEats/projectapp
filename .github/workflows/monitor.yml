@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "Режим: check — обычная проверка; test_group_message — одно ТЕСТ-сообщение в группу"
+        description: "Режим: check — обычная проверка; test_group_message — одно ТЕСТ-сообщение в группу; reencrypt — только перешифровать данные (после смены пароля)"
         type: choice
-        options: [check, test_group_message]
+        options: [check, test_group_message, reencrypt]
         default: check
       allow_city_removal:
         description: "Принять исчезновение города как реальное изменение"
@@ -35,6 +35,8 @@ jobs:
       BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
       GROUP_CHAT_ID: ${{ secrets.GROUP_CHAT_ID }}
       ADMIN_CHAT_ID: ${{ secrets.ADMIN_CHAT_ID }}
+      DASHBOARD_PASSWORD: ${{ secrets.DASHBOARD_PASSWORD }}
+      DASHBOARD_PASSWORD_OLD: ${{ secrets.DASHBOARD_PASSWORD_OLD }}
       PYTHONUNBUFFERED: "1"
     steps:
       - uses: actions/checkout@v4
@@ -43,41 +45,54 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Зависимости (шифрование)
+        run: pip install --quiet -r requirements.txt
+
+      # Без пароля дальше не идём: данные зашифрованы, открытым текстом ничего не пишем
+      - name: Проверка пароля дашборда
+        id: pw
+        run: python monitor/vault.py require-password
+
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
 
       - name: Проверка сайта
         id: check
-        if: inputs.mode != 'test_group_message'
+        if: inputs.mode != 'test_group_message' && inputs.mode != 'reencrypt'
         run: python monitor/check.py ${{ inputs.allow_city_removal && '--allow-city-removal' || '' }}
 
+      - name: Перешифровка данных
+        id: reencrypt
+        if: inputs.mode == 'reencrypt'
+        run: python monitor/check.py --reencrypt
+
       - name: Коммит данных в репозиторий
-        if: always() && inputs.mode != 'test_group_message'
+        if: always() && steps.pw.outcome == 'success' && inputs.mode != 'test_group_message'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data
+          git add -A data
+          if git ls-files -- 'data/*.json' | grep -q .; then
+            echo "::error::В data/ остались открытые *.json — коммит отменён"; git ls-files -- 'data/*.json'; exit 1
+          fi
           if git diff --cached --quiet; then echo "Нечего коммитить"; exit 0; fi
-          git commit -m "data: проверка $(TZ=Asia/Tashkent date +%F) — ${{ steps.check.outputs.status || 'error' }}"
+          git commit -m "data: проверка $(TZ=Asia/Tashkent date +%F) — ${{ steps.check.outputs.status || steps.reencrypt.outputs.status || 'error' }}"
           for i in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push && exit 0; sleep 5; done
           exit 1
 
       - name: Сборка дашборда
-        if: always() && inputs.mode != 'test_group_message'
-        run: |
-          mkdir -p _site
-          cp -r site/. _site/
-          cp -r data _site/data
+        if: always() && steps.pw.outcome == 'success' && inputs.mode != 'test_group_message'
+        run: python monitor/build_site.py _site
 
       - uses: actions/upload-pages-artifact@v3
-        if: always() && inputs.mode != 'test_group_message'
+        if: always() && steps.pw.outcome == 'success' && inputs.mode != 'test_group_message'
         with:
           path: _site
 
       - name: Публикация на GitHub Pages
         id: deploy
-        if: always() && inputs.mode != 'test_group_message'
+        if: always() && steps.pw.outcome == 'success' && inputs.mode != 'test_group_message'
         uses: actions/deploy-pages@v4
 
       - name: Отправка в Telegram
@@ -88,7 +103,8 @@ jobs:
       - name: Сохранить отметку о доставке приветствия
         if: always() && steps.notify.outcome != 'skipped'
         run: |
-          git add data
+          git add -A data
+          if git ls-files -- 'data/*.json' | grep -q .; then echo "::error::открытые *.json в data/"; exit 1; fi
           if git diff --cached --quiet; then echo "Нечего коммитить"; exit 0; fi
           git commit -m "data: приветствие администратору доставлено"
           for i in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push && exit 0; sleep 5; done
