@@ -38,7 +38,9 @@ def parse_bundle_text(js: str) -> dict:
         p.write_text(js, encoding="utf-8")
         r = subprocess.run([node, str(HERE / "extract_bundle.js"), str(p)], capture_output=True, text=True, encoding="utf-8", timeout=120)
     if r.returncode != 0:
-        raise ScrapeError(f"Ошибка extract_bundle.js: {r.stderr.strip()[:500]}")
+        # stderr Node может содержать строку исходника бандла с суммами — берём только «XxxError: сообщение»
+        err = next((l.strip() for l in r.stderr.splitlines() if re.match(r"^\s*\w*Error\b", l)), "без описания")
+        raise ScrapeError(f"Ошибка extract_bundle.js (код {r.returncode}): {err[:200]}")
     return json.loads(r.stdout)
 
 
@@ -150,7 +152,8 @@ def validate(data: dict, prev_snapshot: dict | None, allow_city_removal: bool = 
                 for k in ("days", "orders", "bonus"):
                     v = tier.get(k)
                     if not isinstance(v, int) or v <= 0:
-                        problems.append(f"{slug}/{t}: некорректное поле {k}={v!r}")
+                        # само значение не пишем: сообщение попадает в публичный лог Actions
+                        problems.append(f"{slug}/{t}: некорректное поле {k} (тип {type(v).__name__}, {'≤ 0' if isinstance(v, int) else 'не число'})")
     if total_tiers == 0:
         problems.append("у всех городов пустые бонусы")
     if prev_snapshot and not allow_city_removal:

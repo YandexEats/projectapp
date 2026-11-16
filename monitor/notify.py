@@ -63,7 +63,7 @@ def build_test_group_message() -> tuple[str, str]:
 
 def send_test_group(s: dict) -> None:
     text, url = build_test_group_message()
-    log("ТЕСТ-сообщение в группу:\n" + text + f"\nКнопка: {url}")
+    log(f"ТЕСТ-сообщение в группу: строк в тексте: {len(text.splitlines())}, кнопка «Подробнее» ведёт на тестовые данные (?test=1).")
     telegram.send(s["token"], s["group"], text, url)
 
 

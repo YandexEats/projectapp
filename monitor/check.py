@@ -193,7 +193,8 @@ def main(argv=None) -> int:
                 city_names.setdefault(s, c.get("name_ru"))
             text = telegram.build_change_message(changes, date, city_names)
             pending["group"] = {"text": text, "url": telegram.details_url(dashboard_url(), date, changes)}
-            log("Изменения:\n" + text)
+            # В публичный лог — только количество; суммы и текст уходят лишь в Telegram и в зашифрованную историю
+            log(f"Изменения записаны: изменений: {len(changes)}, городов: {len({c.get('city') for c in changes})}.")
         elif status == "no_change":
             log("Изменений нет.")
 
