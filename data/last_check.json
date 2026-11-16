@@ -2,7 +2,7 @@
   "checked_at": "2026-11-16T16:12:34+00:00",
   "run_id": "43904847668",
   "run_url": "https://github.com/YandexEats/tezkor-referral-monitor/actions/runs/43904847668",
-  "baseline_notified": true,
+  "baseline_notified": false,
   "last_change_date": null,
   "history_start": "2026-11-16",
   "status": "no_change",
