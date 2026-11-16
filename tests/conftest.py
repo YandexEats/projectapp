@@ -45,6 +45,13 @@ class _Recorder(BaseHTTPRequestHandler):
         self.send_response(200); self.send_header("Content-Type", "application/json"); self.end_headers(); self.wfile.write(out)
 
 
+@pytest.fixture(scope="session")
+def live():
+    """Данные с живого сайта (основной способ), один раз на весь прогон."""
+    import scraper
+    return scraper.fetch_primary()
+
+
 @pytest.fixture
 def fake_server():
     """Локальный HTTP-сервер: отдаёт заданные страницы и записывает POST (поддельный Telegram)."""

@@ -44,11 +44,17 @@ h2 { font-size: 17px; margin: 0 0 8px; }
 .error { background: var(--down-bg); color: var(--down); padding: 12px; border-radius: 10px; margin: 12px 0; }
 .test-banner { background: #ffb300; color: #000; text-align: center; font-weight: 700; padding: 8px; position: sticky; top: 0; z-index: 10; }
 
-.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -14px; padding: 0 14px; }
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.scroll-hint { display: none; color: var(--muted); font-size: 12px; margin: 4px 0 0; }
+@media (max-width: 699px) { .scroll-hint { display: block; } }
 table { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 560px; font-size: 13px; }
 th, td { padding: 7px 6px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
 th { color: var(--muted); font-weight: 600; font-size: 12px; }
-td.city, th.city { position: sticky; left: 0; background: var(--card); font-weight: 600; z-index: 1; }
+td.city, th.city {
+  position: sticky; left: 0; z-index: 2; background: var(--card); font-weight: 600;
+  min-width: 96px; max-width: 110px; white-space: normal;
+  box-shadow: 6px 0 6px -4px rgba(0, 0, 0, 0.18); border-right: 1px solid var(--border);
+}
 td .amt { font-weight: 700; white-space: nowrap; }
 td .cond { color: var(--muted); font-size: 12px; white-space: nowrap; }
 td .more { color: var(--accent); font-size: 11px; }

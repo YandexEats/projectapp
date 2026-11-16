@@ -168,12 +168,20 @@ def main(argv=None) -> int:
             log("Изменений нет.")
 
     if telegram.secrets() and not last_info["baseline_notified"]:
+        # Первый запуск с секретами: служебное сообщение ТОЛЬКО администратору (в личку)
         first = history[0]
+        top = fmt_sum(max((t['bonus'] for c in first['cities'].values() for ts in c['transports'].values() for t in ts), default=0))
+        if status == "baseline":
+            head = "✅ <b>Базовый снимок сохранён</b>"
+        elif status == "changed":
+            head = "✅ <b>Проверка: бот подключён.</b> Найдены изменения — сообщение отправлено в группу."
+        else:
+            head = "✅ <b>Проверка: изменений нет, бот подключён</b>"
         pending["admin"].append({
-            "text": f"✅ <b>Базовый снимок сохранён</b>\nИстория начинается с {first['date']}. "
-                    f"Городов: {len(first['cities'])}, максимальный бонус: "
-                    f"{fmt_sum(max((t['bonus'] for c in first['cities'].values() for ts in c['transports'].values() for t in ts), default=0))} сум.\n"
-                    "Мониторинг работает: проверка каждый день в 10:00 (Ташкент).",
+            "text": f"{head}\nИстория начинается с {first['date']} (городов: {len(first['cities'])}, "
+                    f"максимальный бонус: {top} сум).\n"
+                    "Дальше: проверка каждый день в 10:00 (Ташкент). В группу пишу только при изменениях, "
+                    "сюда — только служебные сообщения и предупреждения.",
             "url": dashboard_url(),
         })
         last_info["baseline_notified"] = True

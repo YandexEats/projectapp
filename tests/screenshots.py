@@ -24,6 +24,15 @@ with sync_playwright() as p:
         page.locator("header").screenshot(path=str(OUT / f"{tag}_00_header.png"))
         for i, bid in enumerate(BLOCKS, 1):
             page.locator(f"#{bid}").screenshot(path=str(OUT / f"{tag}_{i}_{bid}.png"))
+        # таблица, прокрученная вправо до конца: колонка города должна остаться видимой
+        page.evaluate("const s=document.getElementById('table-scroll'); s.scrollLeft=s.scrollWidth")
+        page.wait_for_timeout(300)
+        info = page.evaluate("""() => { const s=document.getElementById('table-scroll'); const c=document.querySelector('#current-table td.city');
+            const sr=s.getBoundingClientRect(), cr=c.getBoundingClientRect();
+            return {scrollLeft:s.scrollLeft, maxScroll:s.scrollWidth-s.clientWidth, cityLeft:Math.round(cr.left), boxLeft:Math.round(sr.left), city:c.textContent}; }""")
+        print(f"{tag}: таблица прокручена вправо {info}")
+        page.locator("#block-table").screenshot(path=str(OUT / f"{tag}_1b_table_scrolled_right.png"))
+        page.evaluate("document.getElementById('table-scroll').scrollLeft=0")
         sw = page.evaluate("document.documentElement.scrollWidth")
         print(f"{tag}: ширина страницы {sw}px (окно {page.viewport_size['width']}px)")
     print("Ошибки JS:", errors or "нет")

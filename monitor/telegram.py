@@ -61,7 +61,7 @@ def _change_line(c: dict, city_names: dict) -> str:
 def build_change_message(changes: list[dict], date: str, city_names: dict, test: bool = False) -> str:
     lines = []
     if test:
-        lines.append("🧪 <b>ТЕСТ — это проверочное сообщение, бонусы НЕ менялись</b>")
+        lines.append("🧪 <b>ТЕСТ, не реальное изменение</b>")
         lines.append("")
     lines.append("🔔 <b>Uzum Tezkor изменил реферальные бонусы</b>")
     lines.append(f"📅 {_e(date)}")

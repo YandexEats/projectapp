@@ -29,11 +29,6 @@ def run(script, args, env_extra, cwd=ROOT):
 
 
 @pytest.fixture(scope="module")
-def live():
-    return scraper.fetch_primary()
-
-
-@pytest.fixture(scope="module")
 def live_bundle():
     html = http_get(scraper.SITE_URL)
     path = scraper.find_bundle_path(html)

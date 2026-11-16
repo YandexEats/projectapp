@@ -1,4 +1,4 @@
-﻿# Сохраняет секреты Telegram в GitHub Actions (значения никуда не выводятся и не сохраняются на диске).
+﻿# Сохраняет секреты Telegram в GitHub Actions (значения не выводятся на экран и не сохраняются на диске).
 # Запуск (из папки проекта):  powershell -ExecutionPolicy Bypass -File .\set_secrets.ps1
 $ErrorActionPreference = 'Stop'
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
@@ -16,17 +16,38 @@ function Read-Secret([string]$prompt) {
     try { return [Runtime.InteropServices.Marshal]::PtrToStringBSTR($b) } finally { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($b) }
 }
 
-$token = (Read-Secret 'Вставьте BOT_TOKEN (символы не видны) и нажмите Enter').Trim()
-if ($token -notmatch '^\d+:[A-Za-z0-9_-]{30,}$') { Write-Host 'Похоже, это не токен бота (формат 123456:ABC...). Отмена.' -ForegroundColor Red; exit 1 }
+function Test-Token([string]$v)   { return $v -match '^\d+:[A-Za-z0-9_-]{30,}$' }
+function Test-GroupId([string]$v) { return $v -match '^-100\d+$' }
+function Test-AdminId([string]$v) { return (-not $v.StartsWith('-100')) -and ($v -match '^\d+$') }
 
-$group = (Read-Host -Prompt 'Введите GROUP_CHAT_ID (число, обычно начинается с -100)').Trim()
-if ($group -notmatch '^-?\d+$') { Write-Host 'GROUP_CHAT_ID должен быть числом. Отмена.' -ForegroundColor Red; exit 1 }
+# Для автотеста: только загрузить функции проверки, ничего не спрашивать и не сохранять
+if ($env:SET_SECRETS_SELFTEST -eq '1') { return }
 
-$admin = (Read-Host -Prompt 'ADMIN_CHAT_ID — куда слать служебные сообщения (Enter = та же группа)').Trim()
-if ([string]::IsNullOrEmpty($admin)) { $admin = $group }
-if ($admin -notmatch '^-?\d+$') { Write-Host 'ADMIN_CHAT_ID должен быть числом. Отмена.' -ForegroundColor Red; exit 1 }
+# 1. Токен бота (скрытый ввод)
+while ($true) {
+    $token = (Read-Secret 'Вставьте BOT_TOKEN (символы не видны) и нажмите Enter').Trim()
+    if (Test-Token $token) { break }
+    Write-Host 'Это не похоже на токен бота (формат 123456789:AA...). Попробуйте ещё раз.' -ForegroundColor Yellow
+}
 
-# Значения не печатаются и не попадают в историю команд PowerShell
+# 2. ID группы: только -100...
+while ($true) {
+    $group = (Read-Host -Prompt 'GROUP_CHAT_ID — ID ГРУППЫ (начинается с -100)').Trim()
+    if (Test-GroupId $group) { break }
+    Write-Host 'ID группы должен начинаться с -100 (например -1001234567890). Возьмите строку «ГРУППА» из get_chat_id.py.' -ForegroundColor Yellow
+}
+
+# 3. Личный ID администратора: обычное положительное число, не группа
+while ($true) {
+    $admin = (Read-Host -Prompt 'ADMIN_CHAT_ID — личный ID (обычное число), не ID группы').Trim()
+    if ($admin.StartsWith('-100')) {
+        Write-Host 'Это ID группы, а нужен ваш ЛИЧНЫЙ ID (строка «ЛИЧНЫЙ» из get_chat_id.py). Попробуйте ещё раз.' -ForegroundColor Yellow
+        continue
+    }
+    if (Test-AdminId $admin) { break }
+    Write-Host 'Личный ID — это обычное положительное число без минуса. Попробуйте ещё раз.' -ForegroundColor Yellow
+}
+
 & $gh secret set BOT_TOKEN --repo $repo --body $token
 if ($LASTEXITCODE -ne 0) { Write-Host 'Ошибка сохранения BOT_TOKEN' -ForegroundColor Red; exit 1 }
 & $gh secret set GROUP_CHAT_ID --repo $repo --body $group

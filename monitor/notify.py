@@ -40,15 +40,24 @@ def wait_for_pages(max_wait: int = 180) -> bool:
     return False
 
 
+TEST_CITY, TEST_DATE = "namangan", "2026-09-10"
+
+
+def build_test_group_message() -> tuple[str, str]:
+    """ТЕСТ-сообщение в реальном формате на ВЫМЫШЛЕННОМ изменении из site/testdata (data/ не читается и не меняется)."""
+    changes = read_json(ROOT / "site" / "testdata" / "changes.json", [])
+    sample = [c for c in changes if c.get("city") == TEST_CITY and c.get("date") == TEST_DATE]
+    if not sample:
+        raise RuntimeError("В site/testdata/changes.json нет тестового изменения")
+    text = telegram.build_change_message(sample, TEST_DATE, {TEST_CITY: "Наманган"}, test=True)
+    text += "\n\n<i>Кнопка «📊 Подробнее» откроет дашборд с тестовыми данными.</i>"
+    url = telegram.details_url(dashboard_url(), TEST_DATE, sample, test=True)
+    return text, url
+
+
 def send_test_group(s: dict) -> None:
-    sample = [
-        {"city": "namangan", "transport": "moto", "field": "bonus", "old": 500000, "new": 700000, "diff": 200000, "orders": 80, "days": 30, "tier": 1, "tiers_count": 1},
-        {"city": "namangan", "transport": "ebike", "field": "transport_added", "old": None, "new": 600000, "diff": 600000, "orders": 80, "days": 30},
-    ]
-    date = today_tashkent()
-    text = telegram.build_change_message(sample, date, {"namangan": "Наманган"}, test=True)
-    text += "\n\n<i>Пример формата. Нажмите «📊 Подробнее», чтобы проверить, что открывается дашборд.</i>"
-    url = dashboard_url() + "?city=namangan"
+    text, url = build_test_group_message()
+    log("ТЕСТ-сообщение в группу:\n" + text + f"\nКнопка: {url}")
     telegram.send(s["token"], s["group"], text, url)
 
 
