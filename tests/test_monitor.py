@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from conftest import BASELINE, ROOT, transports_only
+from conftest import BASELINE_SHA256, HERO_SHA256, HERO_UZ_SHA256, ROOT, T, TEST_PASSWORD, read_enc, sha, transports_only, write_enc
 
 import scraper  # noqa: E402
 from common import http_get  # noqa: E402
@@ -20,8 +20,12 @@ DASH = "https://example.github.io/tezkor-referral-monitor/"
 
 
 def run(script, args, env_extra, cwd=ROOT):
-    env = {k: v for k, v in os.environ.items() if k not in ("BOT_TOKEN", "GROUP_CHAT_ID", "ADMIN_CHAT_ID", "GITHUB_RUN_ID", "GITHUB_OUTPUT")}
+    """Запуск скрипта из monitor/. По умолчанию DASHBOARD_PASSWORD = тестовый пароль; None в env_extra — убрать переменную."""
+    drop = ("BOT_TOKEN", "GROUP_CHAT_ID", "ADMIN_CHAT_ID", "GITHUB_RUN_ID", "GITHUB_OUTPUT", "DASHBOARD_PASSWORD", "DASHBOARD_PASSWORD_OLD")
+    env = {k: v for k, v in os.environ.items() if k not in drop}
+    env["DASHBOARD_PASSWORD"] = TEST_PASSWORD
     env.update(env_extra)
+    env = {k: v for k, v in env.items() if v is not None}
     env["PYTHONIOENCODING"] = "utf-8"
     r = subprocess.run([PY, str(ROOT / "monitor" / script), *args], env=env, cwd=cwd, capture_output=True, text=True, encoding="utf-8")
     print(f"\n----- {script} {' '.join(args)} → код выхода {r.returncode} -----\n{r.stdout}{r.stderr}")
@@ -43,10 +47,12 @@ def test1_live_bundle_matches_baseline(live):
     print("Заголовок:", live["hero_text"])
     print("Примечание UZ:", live["notes"]["tashkent_uz"][:80], "…")
     print("Офисы:", {s: o["hours"] + " " + o["days"] for s, o in live["offices"].items()})
-    assert transports_only(live) == BASELINE
-    assert live["hero_text"] == {"ru": "до 1 200 000 сум", "uz": "1 200 000 so'mgacha"}
+    got = sha(transports_only(live))
+    print("SHA-256 бонусов:", got)
+    assert got == BASELINE_SHA256, "бонусы на сайте отличаются от эталона (если изменение официальное — обновите BASELINE_SHA256 в conftest.py)"
+    assert sha(live["hero_text"]) == HERO_SHA256
     assert live["notes"]["tashkent_uz"].startswith("Toshkentda avval ro'yxatdan o'tgan kuryerlar ham hisobga olinadi")
-    assert set(live["offices"]) == set(BASELINE)
+    assert set(live["offices"]) == set(live["cities"])
     assert scraper.validate(live, None) == []
 
 
@@ -74,17 +80,18 @@ def test2_simulated_change_full_pipeline(tmp_path, fake_server, live, live_bundl
     # история = базовый снимок с живого сайта
     from check import build_snapshot
     base_snap = build_snapshot(live, None, "2026-11-01")
-    (data_dir / "history.json").write_text(json.dumps([base_snap], ensure_ascii=False), encoding="utf-8")
-    (data_dir / "last_check.json").write_text(json.dumps({"baseline_notified": True}), encoding="utf-8")
+    write_enc(data_dir, "history.json", [base_snap])
+    write_enc(data_dir, "last_check.json", {"baseline_notified": True})
 
     env = {"SITE_URL": base + "/", "DATA_DIR": str(data_dir), "OUT_DIR": str(out_dir), "CONFIRM_DELAY": "0",
            "BOT_TOKEN": "123:TEST", "GROUP_CHAT_ID": "-1001", "ADMIN_CHAT_ID": "-1002",
            "TELEGRAM_API": base, "DASHBOARD_URL": DASH}
     r = run("check.py", ["--no-fallback"], env)
     assert r.returncode == 0
-    changes = json.loads((data_dir / "changes.json").read_text(encoding="utf-8"))
-    print("===== changes.json =====\n" + json.dumps(changes, ensure_ascii=False, indent=1))
-    hist = json.loads((data_dir / "history.json").read_text(encoding="utf-8"))
+    assert sorted(p.name for p in data_dir.iterdir()) == ["changes.json.enc", "history.json.enc", "last_check.json.enc"], "только шифртекст"
+    changes = read_enc(data_dir, "changes.json")
+    print("===== changes.json (расшифровано) =====\n" + json.dumps(changes, ensure_ascii=False, indent=1))
+    hist = read_enc(data_dir, "history.json")
     assert len(hist) == 2 and hist[1]["bundle_file"] == "/assets/index-TEST123.js"
     kinds = {(c["city"], c["transport"], c["field"], c["old"], c["new"]) for c in changes}
     assert kinds == {("namangan", "moto", "bonus", 500000, 700000),
@@ -107,7 +114,8 @@ def test2_simulated_change_full_pipeline(tmp_path, fake_server, live, live_bundl
 
 
 def test2b_single_city_button_has_city():
-    old = {"cities": {"namangan": {"name_ru": "Наманган", "transports": copy.deepcopy(BASELINE["namangan"])}}}
+    tr = {"moto": T(30, 80, 400000), "car": T(30, 80, 400000), "ebike": [], "bike": T(30, 80, 400000), "walking": []}  # вымышленные
+    old = {"cities": {"namangan": {"name_ru": "Наманган", "transports": tr}}}
     new = copy.deepcopy(old)
     new["cities"]["namangan"]["transports"]["ebike"] = [{"days": 30, "orders": 80, "bonus": 600000}]
     ch = compare(old, new, "2026-11-16")
@@ -127,21 +135,21 @@ def test3_broken_site_alerts_admin_only(tmp_path, fake_server, live, case):
     data_dir, out_dir = tmp_path / "data", tmp_path / "out"
     data_dir.mkdir()
     from check import build_snapshot
-    hist_text = json.dumps([build_snapshot(live, None, "2026-11-01")], ensure_ascii=False)
-    (data_dir / "history.json").write_text(hist_text, encoding="utf-8")
+    write_enc(data_dir, "history.json", [build_snapshot(live, None, "2026-11-01")])
+    hist_bytes = (data_dir / "history.json.enc").read_bytes()
     env = {"SITE_URL": site, "DATA_DIR": str(data_dir), "OUT_DIR": str(out_dir), "CONFIRM_DELAY": "0", "PW_TIMEOUT": "8000",
            "BOT_TOKEN": "123:TEST", "GROUP_CHAT_ID": "-1001", "ADMIN_CHAT_ID": "-1002", "TELEGRAM_API": base,
            "GITHUB_SERVER_URL": "https://github.com", "GITHUB_REPOSITORY": "owner/tezkor-referral-monitor", "GITHUB_RUN_ID": "777"}
     r = run("check.py", [], env)
     assert r.returncode != 0, "должен завершиться с ошибкой"
-    assert (data_dir / "history.json").read_text(encoding="utf-8") == hist_text, "история не должна меняться"
-    assert not (data_dir / "changes.json").exists()
+    assert (data_dir / "history.json.enc").read_bytes() == hist_bytes, "история не должна меняться"
+    assert not (data_dir / "changes.json.enc").exists() and not list(data_dir.glob("*.json"))
     assert [c["payload"]["chat_id"] for c in handler.calls] == ["-1002"], "только админ, без группы"
     alert = handler.calls[0]["payload"]["text"]
     print("===== Сообщение администратору =====\n" + alert)
     assert "Не удалось прочитать сайт, возможно изменилась структура" in alert
     assert "https://github.com/owner/tezkor-referral-monitor/actions/runs/777" in alert
-    last = json.loads((data_dir / "last_check.json").read_text(encoding="utf-8"))
+    last = read_enc(data_dir, "last_check.json")
     assert last["status"] == "error"
 
 
@@ -151,8 +159,8 @@ def test4_playwright_fallback_matches_baseline():
     print("\nЗапасной способ (Playwright):", d["method"], d["bundle_file"], d["hero_text"])
     for slug, tr in transports_only(d).items():
         print(f"  {slug:10s}", tr)
-    assert transports_only(d) == BASELINE
-    assert d["hero_text"]["uz"] == "1 200 000 so'mgacha"
+    assert sha(transports_only(d)) == BASELINE_SHA256
+    assert sha(d["hero_text"]["uz"]) == HERO_UZ_SHA256
 
 
 def test4b_force_fallback_via_check(tmp_path):
@@ -160,7 +168,7 @@ def test4b_force_fallback_via_check(tmp_path):
     data_dir, out_dir = tmp_path / "data", tmp_path / "out"
     r = run("check.py", ["--force-fallback"], {"DATA_DIR": str(data_dir), "OUT_DIR": str(out_dir), "CONFIRM_DELAY": "0"})
     assert r.returncode == 0
-    hist = json.loads((data_dir / "history.json").read_text(encoding="utf-8"))
+    hist = read_enc(data_dir, "history.json")
     assert hist[0]["method"] == "playwright"
-    assert transports_only(hist[0]) == BASELINE
+    assert sha(transports_only(hist[0])) == BASELINE_SHA256
     assert "секреты не заданы — Telegram пропущен" in run("notify.py", [], {"OUT_DIR": str(out_dir)}).stdout

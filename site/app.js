@@ -25,12 +25,51 @@
   const dateMs = (d) => Date.parse(d + "T00:00:00Z");
   const maxTier = (tiers) => (tiers && tiers.length ? tiers.reduce((a, b) => (b.bonus > a.bonus ? b : a)) : null);
 
-  async function load(name, fallback) {
-    try {
-      const r = await fetch(DATA + name + "?t=" + Date.now(), { cache: "no-store" });
-      if (!r.ok) throw new Error(r.status);
-      return await r.json();
-    } catch (e) { return fallback; }
+  // ---------------------------------------------------------------- шифрование
+  // Совместимо с monitor/vault.py: AES-256-GCM, ключ PBKDF2-SHA256(пароль NFC, salt, iter),
+  // AAD = "tezkor-referral-monitor/v1/<имя>". В localStorage хранится только производный ключ.
+  const KEY_STORE = "tezkor-dashboard-key-v1";
+  const MIN_ITER = 300000;
+  const AAD_PREFIX = "tezkor-referral-monitor/v1/";
+  const enc = new TextEncoder(), dec = new TextDecoder();
+  const b64d = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+  const b64e = (u8) => { let s = ""; u8.forEach((b) => (s += String.fromCharCode(b))); return btoa(s); };
+
+  function checkEnvelope(e) {
+    if (!e || e.v !== 1 || e.alg !== "AES-256-GCM" || e.kdf !== "PBKDF2-SHA256" || !(e.iter >= MIN_ITER)) throw new Error("bad-envelope");
+  }
+  async function deriveKey(password, env, extractable) {
+    const base = await crypto.subtle.importKey("raw", enc.encode(password.normalize("NFC")), "PBKDF2", false, ["deriveKey"]);
+    return crypto.subtle.deriveKey({ name: "PBKDF2", hash: "SHA-256", salt: b64d(env.salt), iterations: env.iter },
+      base, { name: "AES-GCM", length: 256 }, extractable, ["decrypt"]);
+  }
+  async function decryptEnv(key, env, name) {
+    const pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64d(env.iv), additionalData: enc.encode(AAD_PREFIX + name), tagLength: 128 }, key, b64d(env.ct));
+    return JSON.parse(dec.decode(pt));
+  }
+  function storedKey() { try { return JSON.parse(localStorage.getItem(KEY_STORE) || "null"); } catch (e) { return null; } }
+  function forgetKey() { try { localStorage.removeItem(KEY_STORE); } catch (e) { /* нет доступа к хранилищу */ } }
+  async function rememberKey(key, env) {
+    const raw = new Uint8Array(await crypto.subtle.exportKey("raw", key));
+    try { localStorage.setItem(KEY_STORE, JSON.stringify({ v: 1, salt: env.salt, iter: env.iter, k: b64e(raw) })); } catch (e) { /* приватный режим */ }
+  }
+
+  async function fetchEnv(name) {
+    const r = await fetch(DATA + name + ".enc?t=" + Date.now(), { cache: "no-store" });
+    if (r.status === 404) return null;
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const e = await r.json();
+    checkEnvelope(e);
+    return e;
+  }
+
+  // Расшифровать все три файла. Ключ проверяется на last_check (он есть всегда, когда есть данные).
+  async function decryptAll(key, envs) {
+    const out = {};
+    for (const [name, fallback] of [["last_check.json", {}], ["history.json", []], ["changes.json", []]]) {
+      out[name] = envs[name] ? await decryptEnv(key, envs[name], name) : fallback;
+    }
+    return out;
   }
 
   let history = [], changes = [], last = {}, charts = {};
@@ -220,9 +259,62 @@
     }
   }
 
+  function gateStatus(text) { const s = $("gate-status"); s.textContent = text || ""; s.hidden = !text; }
+
   async function main() {
     if (TEST) { $("test-banner").hidden = false; document.title = "ТЕСТ · " + document.title; }
-    [history, changes, last] = await Promise.all([load("history.json", []), load("changes.json", []), load("last_check.json", {})]);
+    $("logout").addEventListener("click", () => { forgetKey(); location.reload(); });
+    if (!window.crypto || !crypto.subtle) { gateStatus("Браузер не поддерживает расшифровку (нужен HTTPS и современный браузер)."); return; }
+    let envs;
+    try {
+      const names = ["last_check.json", "history.json", "changes.json"];
+      const list = await Promise.all(names.map(fetchEnv));
+      envs = Object.fromEntries(names.map((n, i) => [n, list[i]]));
+    } catch (e) { gateStatus("Не удалось загрузить данные. Обновите страницу."); return; }
+    const ref = envs["last_check.json"] || envs["history.json"];
+    if (!ref) { gateStatus("Данных пока нет — первая проверка ещё не выполнялась."); return; }
+
+    // 1) ключ, запомненный на этом устройстве
+    const st = storedKey();
+    if (st && st.salt === ref.salt && st.iter === ref.iter) {
+      try {
+        const key = await crypto.subtle.importKey("raw", b64d(st.k), { name: "AES-GCM" }, false, ["decrypt"]);
+        return showApp(await decryptAll(key, envs));
+      } catch (e) { forgetKey(); }
+    } else if (st) forgetKey(); // пароль сменили — старый ключ больше не подходит
+
+    // 2) форма пароля
+    gateStatus("");
+    const form = $("login-form"), btn = $("login-btn"), err = $("login-error"), pw = $("pw");
+    form.hidden = false;
+    pw.focus();
+    pw.addEventListener("input", () => (err.hidden = true));
+    form.addEventListener("submit", async (ev) => {
+      ev.preventDefault();
+      if (btn.disabled) return;
+      btn.disabled = true; btn.textContent = "Проверяю…"; err.hidden = true;
+      const remember = $("remember").checked;
+      try {
+        const key = await deriveKey(pw.value, ref, remember);
+        const data = await decryptAll(key, envs);
+        if (remember) await rememberKey(key, ref);
+        pw.value = "";
+        showApp(data);
+      } catch (e) {
+        err.textContent = "Неверный пароль"; err.hidden = false;
+        pw.select();
+      } finally { btn.disabled = false; btn.textContent = "Войти"; }
+    });
+  }
+
+  function showApp(data) {
+    last = data["last_check.json"]; history = data["history.json"]; changes = data["changes.json"];
+    $("gate").hidden = true;
+    ["app-header", "app-main", "app-footer"].forEach((id) => ($(id).hidden = false));
+    render();
+  }
+
+  function render() {
     renderHeader();
     if (!history.length) {
       $("error").hidden = false;

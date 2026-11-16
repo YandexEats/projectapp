@@ -1,8 +1,15 @@
-"""Скриншоты живого дашборда в мобильном окне (iPhone-размер). Запуск: python tests/screenshots.py [URL]"""
+"""Скриншоты живого дашборда в мобильном окне (iPhone-размер). Запуск: python tests/screenshots.py [URL]
+
+Дашборд защищён паролем: он берётся из переменной DASHBOARD_PASSWORD или спрашивается (ввод скрыт).
+"""
+import getpass
+import os
 import sys
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
+
+PASSWORD = os.environ.get("DASHBOARD_PASSWORD") or getpass.getpass("Пароль дашборда (символы не видны): ")
 
 URL = sys.argv[1] if len(sys.argv) > 1 else "https://yandexeats.github.io/tezkor-referral-monitor/"
 OUT = Path(__file__).resolve().parent.parent / "test-evidence"
@@ -17,6 +24,10 @@ with sync_playwright() as p:
     page.on("pageerror", lambda e: errors.append(str(e)))
     for tag, q in [("real", ""), ("test", "?test=1"), ("deeplink", "?test=1&city=namangan&date=2026-09-10")]:
         page.goto(URL + q + ("&" if q else "?") + "nocache=1", wait_until="networkidle")
+        if page.locator("#login-form").is_visible():
+            page.fill("#pw", PASSWORD)
+            page.click("#login-btn")
+        page.wait_for_selector("#app-main", state="visible", timeout=20000)
         page.wait_for_timeout(1200)
         page.screenshot(path=str(OUT / f"{tag}_00_viewport.png"))
         if tag == "deeplink":

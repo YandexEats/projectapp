@@ -1,6 +1,10 @@
 """Фаза 1: загрузить → разобрать → сравнить → дописать историю.
 
-Пишет data/*.json и out/pending.json (сообщения, которые notify.py отправит
+Данные хранятся ЗАШИФРОВАННЫМИ (data/*.json.enc, см. vault.py, пароль — секрет DASHBOARD_PASSWORD).
+Без пароля или с неверным паролем: ошибка, предупреждение администратору, данные не трогаются.
+--reencrypt: только перешифровать данные (после смены пароля), сайт не проверяется.
+
+Пишет data/*.json.enc и out/pending.json (сообщения, которые notify.py отправит
 ПОСЛЕ коммита и публикации дашборда). При поломке сайта сразу шлёт
 предупреждение администратору и завершается с кодом 1.
 """
@@ -13,11 +17,12 @@ import sys
 import time
 from pathlib import Path
 
-from common import (DATA_DIR, ROOT, dashboard_url, fmt_sum, log, now_utc_iso, read_json,
+from common import (DATA_DIR, ROOT, dashboard_url, fmt_sum, log, now_utc_iso,
                     run_url, today_tashkent, write_json)
 from diff import compare
 from scraper import fetch_with_fallback, validate
 import telegram
+from vault import DATA_NAMES, Vault, VaultError
 
 OUT_DIR = Path(os.environ.get("OUT_DIR", ROOT / "out"))
 SECONDARY = ("offices", "notes", "transport_types")
@@ -62,19 +67,38 @@ def gh_output(**kv) -> None:
 
 
 def alert_admin_broken(errors: list[str]) -> None:
-    text = ("⚠️ <b>Не удалось прочитать сайт, возможно изменилась структура</b>\n\n"
-            "Ошибка:\n<code>" + telegram._e("\n".join(errors))[:3000] + "</code>")
-    link = run_url()
-    if link:
-        text += f"\n\n🔗 Запуск Actions: {link}"
-    s = telegram.secrets()
-    if not s:
-        log(telegram.SKIP_MSG + " (предупреждение администратору не отправлено)")
-        return
+    telegram.alert_admin("⚠️ <b>Не удалось прочитать сайт, возможно изменилась структура</b>\n\n"
+                         "Ошибка:\n<code>" + telegram._e("\n".join(errors))[:3000] + "</code>")
+
+
+def open_vault() -> tuple[Vault | None, tuple | None]:
+    """Открыть зашифрованные данные. При любой проблеме с паролем — ошибка и предупреждение админу, данные не трогаем."""
     try:
-        telegram.send(s["token"], s["admin"], text)
-    except Exception as e:  # noqa: BLE001
-        log(f"Не удалось отправить предупреждение администратору: {e}")
+        vault = Vault.from_env(DATA_DIR)
+        history = vault.load("history.json", [])
+        change_log = vault.load("changes.json", [])
+        last = vault.load("last_check.json", {})
+    except VaultError as e:
+        log(f"::error title=Шифрование данных::{e}")
+        log("ОШИБКА: " + str(e))
+        telegram.alert_admin("⛔ <b>Дашборд: проблема с паролем данных</b>\n\n" + telegram._e(str(e)))
+        gh_output(status="error", has_pending="false")
+        return None, None
+    return vault, (history, change_log, last)
+
+
+def reencrypt(vault: Vault, history, change_log, last, emit: bool = True) -> int:
+    """Перешифровать все файлы: новый IV, а при смене пароля — новая соль. Содержимое не меняется."""
+    if vault.used_old_password or vault.migrated:
+        vault.new_salt()
+    for name, obj in (("history.json", history), ("changes.json", change_log), ("last_check.json", last)):
+        vault.save(name, obj)
+    how = "старым паролем (DASHBOARD_PASSWORD_OLD)" if vault.used_old_password else "текущим паролем"
+    log(f"Перешифровано: {', '.join(DATA_NAMES)} (прочитано {how}"
+        + (f"; из открытого формата: {', '.join(vault.migrated)}" if vault.migrated else "") + ").")
+    if emit:
+        gh_output(status="reencrypted", has_pending="false")
+    return 0
 
 
 def main(argv=None) -> int:
@@ -83,12 +107,18 @@ def main(argv=None) -> int:
     ap.add_argument("--force-fallback", action="store_true", help="сразу использовать Playwright")
     ap.add_argument("--no-fallback", action="store_true", help="не использовать Playwright")
     ap.add_argument("--allow-city-removal", action="store_true")
+    ap.add_argument("--reencrypt", action="store_true", help="только перешифровать данные (после смены пароля)")
     args = ap.parse_args(argv)
 
-    hist_path, changes_path, last_path = DATA_DIR / "history.json", DATA_DIR / "changes.json", DATA_DIR / "last_check.json"
-    history = read_json(hist_path, [])
-    change_log = read_json(changes_path, [])
-    last = read_json(last_path, {})
+    vault, loaded = open_vault()
+    if vault is None:
+        return 2
+    history, change_log, last = loaded
+    if args.reencrypt:
+        return reencrypt(vault, history, change_log, last)
+    if vault.migrated or vault.used_old_password:
+        # Старые открытые *.json (или данные под старым паролем) — сразу шифруем всё, до любых других шагов
+        reencrypt(vault, history, change_log, last, emit=False)
     prev = history[-1] if history else None
     date = today_tashkent()
     pending = {"group": None, "admin": []}
@@ -113,7 +143,7 @@ def main(argv=None) -> int:
         log("ОШИБКА: сайт не прочитан или данные выглядят сломанными: " + "; ".join(all_err))
         alert_admin_broken(all_err)
         last_info.update(status="error", method=(data or {}).get("method"), bundle_file=(data or {}).get("bundle_file"), error="; ".join(all_err))
-        write_json(last_path, last_info)
+        vault.save("last_check.json", last_info)
         gh_output(status="error", has_pending="false")
         log("История НЕ изменена, сообщение в группу НЕ отправлялось.")
         return 1
@@ -188,9 +218,9 @@ def main(argv=None) -> int:
 
     last_info.update(status=status, method=snapshot["method"], bundle_file=snapshot["bundle_file"], error=None,
                      history_start=history[0]["date"] if history else None, snapshots=len(history))
-    write_json(hist_path, history)
-    write_json(changes_path, change_log)
-    write_json(last_path, last_info)
+    vault.save("history.json", history)
+    vault.save("changes.json", change_log)
+    vault.save("last_check.json", last_info)
     write_json(OUT_DIR / "pending.json", pending)
     has_pending = bool(pending["group"] or pending["admin"])
     gh_output(status=status, has_pending=str(has_pending).lower())

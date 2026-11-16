@@ -1,11 +1,12 @@
 name: Публикация дашборда
 
-# Перепубликует дашборд, когда меняется его код (site/) вручную.
+# Перепубликует дашборд, когда меняется его код вручную.
 # Данные публикует сам workflow мониторинга после каждой проверки.
+# Публикуются только зашифрованные файлы (*.json.enc), см. monitor/build_site.py.
 on:
   push:
     branches: [main]
-    paths: ["site/**"]
+    paths: ["site/**", "monitor/build_site.py", "monitor/vault.py", "monitor/testdata.py", ".github/workflows/pages.yml"]
   workflow_dispatch:
 
 permissions:
@@ -23,13 +24,22 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
+    env:
+      BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+      GROUP_CHAT_ID: ${{ secrets.GROUP_CHAT_ID }}
+      ADMIN_CHAT_ID: ${{ secrets.ADMIN_CHAT_ID }}
+      DASHBOARD_PASSWORD: ${{ secrets.DASHBOARD_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Зависимости (шифрование)
+        run: pip install --quiet -r requirements.txt
+      - name: Проверка пароля дашборда
+        run: python monitor/vault.py require-password
       - name: Сборка
-        run: |
-          mkdir -p _site
-          cp -r site/. _site/
-          if [ -d data ]; then cp -r data _site/data; fi
+        run: python monitor/build_site.py _site
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

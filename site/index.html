@@ -11,8 +11,25 @@
 </head>
 <body>
   <div id="test-banner" class="test-banner" hidden>🧪 ТЕСТОВЫЕ ДАННЫЕ — не настоящая история</div>
-  <header class="wrap">
-    <h1>Реферальная программа Uzum Tezkor — мониторинг</h1>
+
+  <!-- Данные зашифрованы (AES-256-GCM). Без пароля страница показывает только эту форму. -->
+  <div id="gate" class="gate wrap">
+    <form id="login-form" class="card login" autocomplete="on" hidden>
+      <h1 class="login-title">🔒 Мониторинг Uzum Tezkor</h1>
+      <label for="pw" class="login-label">Введите пароль</label>
+      <input id="pw" name="password" type="password" autocomplete="current-password" placeholder="Введите пароль" required>
+      <label class="remember"><input type="checkbox" id="remember"> Запомнить на этом устройстве</label>
+      <button type="submit" id="login-btn">Войти</button>
+      <p id="login-error" class="login-error" role="alert" hidden>Неверный пароль</p>
+    </form>
+    <p id="gate-status" class="gate-status hint">Загрузка…</p>
+  </div>
+
+  <header class="wrap" id="app-header" hidden>
+    <div class="head-row">
+      <h1>Реферальная программа Uzum Tezkor — мониторинг</h1>
+      <button type="button" id="logout" class="logout">Выйти</button>
+    </div>
     <div class="meta">
       <div><span class="k">Последняя проверка:</span> <span id="last-check">—</span> <span id="last-status" class="badge"></span></div>
       <div><span class="k">Последнее изменение:</span> <span id="last-change">—</span></div>
@@ -20,7 +37,7 @@
     </div>
   </header>
 
-  <main class="wrap">
+  <main class="wrap" id="app-main" hidden>
     <div id="error" class="error" hidden></div>
 
     <section class="card" id="block-table">
@@ -57,7 +74,7 @@
       <div id="offices" class="offices"></div>
     </section>
   </main>
-  <footer class="wrap hint">
+  <footer class="wrap hint" id="app-footer" hidden>
     Данные: <a href="https://referral.uzumtezkor.uz/" rel="noopener" target="_blank">referral.uzumtezkor.uz</a>, проверка раз в день в 10:00 (Ташкент).
     Неофициальный мониторинг.
   </footer>

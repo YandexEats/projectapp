@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from conftest import ROOT
+from conftest import ROOT, read_enc, write_enc
 from test_monitor import run
 
 PS = "powershell.exe"
@@ -80,8 +80,8 @@ def test_first_run_with_secrets_admin_only(tmp_path, fake_server, live, with_his
     data_dir.mkdir()
     if with_history:
         from check import build_snapshot
-        (data_dir / "history.json").write_text(json.dumps([build_snapshot(live, None, "2026-11-16")], ensure_ascii=False), encoding="utf-8")
-        (data_dir / "last_check.json").write_text(json.dumps({"baseline_notified": False}), encoding="utf-8")
+        write_enc(data_dir, "history.json", [build_snapshot(live, None, "2026-11-16")])
+        write_enc(data_dir, "last_check.json", {"baseline_notified": False})
     env = {"DATA_DIR": str(data_dir), "OUT_DIR": str(out_dir), "CONFIRM_DELAY": "0", "BOT_TOKEN": "123:TEST",
            "GROUP_CHAT_ID": "-1001", "ADMIN_CHAT_ID": "555", "TELEGRAM_API": base,
            "DASHBOARD_URL": "https://yandexeats.github.io/tezkor-referral-monitor/"}
@@ -91,7 +91,8 @@ def test_first_run_with_secrets_admin_only(tmp_path, fake_server, live, with_his
     p = handler.calls[0]["payload"]
     print("===== Админу =====\n" + p["text"] + "\nКнопка: " + p["reply_markup"]["inline_keyboard"][0][0]["url"])
     assert expect in p["text"]
-    assert json.loads((data_dir / "last_check.json").read_text(encoding="utf-8"))["baseline_notified"] is True
+    assert read_enc(data_dir, "last_check.json")["baseline_notified"] is True
+    assert not list(data_dir.glob("*.json")), "открытых файлов быть не должно"
     # повторный запуск — больше не шлёт
     handler.calls.clear()
     run("check.py", ["--no-fallback"], env)
@@ -106,23 +107,23 @@ def test_hello_not_marked_when_telegram_refuses(tmp_path, fake_server, live):
     data_dir, out_dir = tmp_path / "data", tmp_path / "out"
     data_dir.mkdir()
     from check import build_snapshot
-    (data_dir / "history.json").write_text(json.dumps([build_snapshot(live, None, "2026-11-16")], ensure_ascii=False), encoding="utf-8")
+    write_enc(data_dir, "history.json", [build_snapshot(live, None, "2026-11-16")])
     env = {"DATA_DIR": str(data_dir), "OUT_DIR": str(out_dir), "CONFIRM_DELAY": "0", "BOT_TOKEN": "123:TEST",
            "GROUP_CHAT_ID": "-1001", "ADMIN_CHAT_ID": "555", "TELEGRAM_API": base}
     assert run("check.py", ["--no-fallback"], env).returncode == 0
     r = run("notify.py", [], env)
     assert r.returncode == 1 and "chat not found" in r.stdout
-    assert json.loads((data_dir / "last_check.json").read_text(encoding="utf-8"))["baseline_notified"] is False
+    assert read_enc(data_dir, "last_check.json")["baseline_notified"] is False
     handler.fail_chats.clear(); handler.calls.clear()
     run("check.py", ["--no-fallback"], env)
     assert run("notify.py", [], env).returncode == 0
     assert [c["payload"]["chat_id"] for c in handler.calls] == ["555"]
-    assert json.loads((data_dir / "last_check.json").read_text(encoding="utf-8"))["baseline_notified"] is True
+    assert read_enc(data_dir, "last_check.json")["baseline_notified"] is True
 
 
 # ------------------------------------------------ ТЕСТ-сообщение в группу
 def _digest(folder: Path) -> dict:
-    return {p.name: hashlib.sha256(p.read_bytes()).hexdigest()[:16] for p in sorted(folder.glob("*.json"))}
+    return {p.name: hashlib.sha256(p.read_bytes()).hexdigest()[:16] for p in sorted(folder.glob("*")) if p.is_file()}
 
 
 def test_test_group_message_does_not_touch_data(fake_server):

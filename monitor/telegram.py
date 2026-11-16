@@ -93,6 +93,24 @@ def details_url(base: str, date: str, changes: list[dict], test: bool = False) -
     return base + "?" + urlencode(params)
 
 
+def alert_admin(text: str) -> bool:
+    """Служебное предупреждение администратору в личку (+ ссылка на запуск Actions). Ошибки не пробрасывает."""
+    from common import run_url
+    link = run_url()
+    if link:
+        text += f"\n\n🔗 Запуск Actions: {link}"
+    s = secrets()
+    if not s:
+        log(SKIP_MSG + " (предупреждение администратору не отправлено)")
+        return False
+    try:
+        send(s["token"], s["admin"], text)
+        return True
+    except Exception as e:  # noqa: BLE001
+        log(f"Не удалось отправить предупреждение администратору: {e}")
+        return False
+
+
 def send(token: str, chat_id: str, text: str, button_url: str | None = None) -> dict:
     payload = {"chat_id": chat_id, "text": text, "parse_mode": "HTML", "disable_web_page_preview": True}
     if button_url:

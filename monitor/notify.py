@@ -1,7 +1,7 @@
 """Фаза 2: после коммита и публикации дашборда отправляет сообщения из out/pending.json.
 
-Перед отправкой ждёт (до 3 минут), пока живой data/last_check.json на GitHub Pages
-покажет текущий запуск — чтобы кнопка «Подробнее» уже открывала свежие данные.
+Перед отправкой ждёт (до 3 минут), пока живой data/last_check.json.enc на GitHub Pages
+(расшифровывается паролем DASHBOARD_PASSWORD) покажет текущий запуск — чтобы кнопка «Подробнее» уже открывала свежие данные.
 
 --test-group : отправить ОДНО тестовое сообщение (с пометкой ТЕСТ) в группу.
 """
@@ -14,8 +14,10 @@ import sys
 import time
 from pathlib import Path
 
-from common import DATA_DIR, ROOT, dashboard_url, http_get, log, read_json, write_json
+from common import DATA_DIR, ROOT, dashboard_url, http_get, log, read_json
 import telegram
+import testdata
+from vault import Vault, VaultError, decrypt_obj, password_from_env
 
 OUT = Path(os.environ.get("OUT_DIR", ROOT / "out")) / "pending.json"
 
@@ -24,11 +26,15 @@ def wait_for_pages(max_wait: int = 180) -> bool:
     run_id = os.environ.get("GITHUB_RUN_ID")
     if not run_id:
         return True
-    url = dashboard_url() + "data/last_check.json"
+    password = password_from_env()
+    if not password:
+        log("DASHBOARD_PASSWORD не задан — не могу проверить свежесть дашборда, не жду.")
+        return False
+    url = dashboard_url() + "data/last_check.json.enc"
     deadline = time.time() + max_wait
     while time.time() < deadline:
         try:
-            live = json.loads(http_get(f"{url}?t={int(time.time())}", retries=1))
+            live = decrypt_obj(json.loads(http_get(f"{url}?t={int(time.time())}", retries=1)), "last_check.json", password)
             if str(live.get("run_id")) == str(run_id):
                 log(f"Дашборд обновлён: {url} показывает запуск {run_id}")
                 return True
@@ -44,11 +50,11 @@ TEST_CITY, TEST_DATE = "namangan", "2026-09-10"
 
 
 def build_test_group_message() -> tuple[str, str]:
-    """ТЕСТ-сообщение в реальном формате на ВЫМЫШЛЕННОМ изменении из site/testdata (data/ не читается и не меняется)."""
-    changes = read_json(ROOT / "site" / "testdata" / "changes.json", [])
+    """ТЕСТ-сообщение в реальном формате на ВЫМЫШЛЕННОМ изменении из testdata.py (data/ не читается и не меняется)."""
+    changes = testdata.build()[1]
     sample = [c for c in changes if c.get("city") == TEST_CITY and c.get("date") == TEST_DATE]
     if not sample:
-        raise RuntimeError("В site/testdata/changes.json нет тестового изменения")
+        raise RuntimeError("В вымышленных тестовых данных (monitor/testdata.py) нет тестового изменения")
     text = telegram.build_change_message(sample, TEST_DATE, {TEST_CITY: "Наманган"}, test=True)
     text += "\n\n<i>Кнопка «📊 Подробнее» откроет дашборд с тестовыми данными.</i>"
     url = telegram.details_url(dashboard_url(), TEST_DATE, sample, test=True)
@@ -62,11 +68,15 @@ def send_test_group(s: dict) -> None:
 
 
 def mark_hello_sent() -> None:
-    """Отметить в data/last_check.json, что приветствие администратору доставлено."""
-    path = DATA_DIR / "last_check.json"
-    last = read_json(path, {})
-    last["baseline_notified"] = True
-    write_json(path, last)
+    """Отметить в data/last_check.json.enc, что приветствие администратору доставлено."""
+    try:
+        vault = Vault.from_env(DATA_DIR)
+        last = vault.load("last_check.json", {})
+        last["baseline_notified"] = True
+        vault.save("last_check.json", last)
+    except VaultError as e:
+        log(f"Отметку baseline_notified сохранить не удалось: {e}")
+        return
     log("Отметка baseline_notified=true сохранена.")
 
 
