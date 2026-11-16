@@ -7,7 +7,7 @@ $gh = (Get-Command gh -ErrorAction SilentlyContinue).Source
 if (-not $gh) { $gh = 'C:\Program Files\GitHub CLI\gh.exe' }
 if (-not (Test-Path $gh)) { Write-Host 'Не найден GitHub CLI (gh).' -ForegroundColor Red; exit 1 }
 
-$repo = 'YandexEats/tezkor-referral-monitor'
+$repo = (Get-Content (Join-Path $PSScriptRoot 'config.json') -Raw -Encoding UTF8 | ConvertFrom-Json).github_repo   # имя репозитория — только в config.json
 Write-Host "Репозиторий: $repo" -ForegroundColor Cyan
 
 function Read-Secret([string]$prompt) {

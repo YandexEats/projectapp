@@ -11,7 +11,10 @@ from playwright.sync_api import sync_playwright
 
 PASSWORD = os.environ.get("DASHBOARD_PASSWORD") or getpass.getpass("Пароль дашборда (символы не видны): ")
 
-URL = sys.argv[1] if len(sys.argv) > 1 else "https://yandexeats.github.io/tezkor-referral-monitor/"
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "monitor"))
+from common import dashboard_url  # noqa: E402  (адрес из config.json)
+
+URL = sys.argv[1] if len(sys.argv) > 1 else dashboard_url()
 OUT = Path(__file__).resolve().parent.parent / "test-evidence"
 OUT.mkdir(exist_ok=True)
 BLOCKS = ["block-table", "block-history", "block-bars", "block-log", "block-offices"]

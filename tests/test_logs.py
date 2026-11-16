@@ -31,7 +31,7 @@ def test_redact_masks_amounts(raw, expected):
 
 
 @pytest.mark.parametrize("keep", [
-    "Запуск Actions: https://github.com/YandexEats/tezkor-referral-monitor/actions/runs/43925956761",
+    "Запуск Actions: https://github.com/owner/repo/actions/runs/43925956761",
     "Дашборд обновлён: показывает запуск 43925956761",
     "data: проверка 2026-11-16 — no_change",
     "бандл=/assets/index-CEGaT5xQ.js, метод=bundle",
@@ -88,8 +88,7 @@ def test_change_run_logs_only_counts(tmp_path, fake_server, live, live_bundle):
 def test_test_group_message_logs_only_counts(fake_server):
     from test_monitor import run
     base, handler = fake_server
-    env = {"BOT_TOKEN": "123:TEST", "GROUP_CHAT_ID": "-1001", "ADMIN_CHAT_ID": "555", "TELEGRAM_API": base,
-           "DASHBOARD_URL": "https://yandexeats.github.io/tezkor-referral-monitor/"}
+    env = {"BOT_TOKEN": "123:TEST", "GROUP_CHAT_ID": "-1001", "ADMIN_CHAT_ID": "555", "TELEGRAM_API": base}
     r = run("notify.py", ["--test-group"], env)
     assert r.returncode == 0 and "строк в тексте:" in r.stdout
     assert "600 000" in handler.calls[0]["payload"]["text"]

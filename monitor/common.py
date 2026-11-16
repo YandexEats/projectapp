@@ -132,12 +132,19 @@ def run_url() -> str | None:
     return None
 
 
+def github_repo() -> str:
+    """Имя репозитория «владелец/имя» — единственное место: config.json в корне проекта."""
+    with open(ROOT / "config.json", encoding="utf-8") as f:
+        repo = json.load(f)["github_repo"].strip()
+    if repo.count("/") != 1:
+        raise ValueError(f"config.json: github_repo должен быть вида «владелец/имя», сейчас «{repo}»")
+    return repo
+
+
 def dashboard_url() -> str:
+    """Адрес дашборда на GitHub Pages. Берётся из config.json; DASHBOARD_URL — только для тестов."""
     url = os.environ.get("DASHBOARD_URL")
     if url:
         return url.rstrip("/") + "/"
-    repo = os.environ.get("GITHUB_REPOSITORY", "")
-    if "/" in repo:
-        owner, name = repo.split("/", 1)
-        return f"https://{owner.lower()}.github.io/{name}/"
-    return "https://example.github.io/tezkor-referral-monitor/"
+    owner, name = github_repo().split("/")
+    return f"https://{owner.lower()}.github.io/{name}/"

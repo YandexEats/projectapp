@@ -12,7 +12,7 @@ $ErrorActionPreference = 'Continue'   # ошибки gh проверяются �
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = New-Object System.Text.UTF8Encoding $false   # stdin для gh: UTF-8 без BOM
 
-$repo = 'YandexEats/tezkor-referral-monitor'
+$repo = (Get-Content (Join-Path $PSScriptRoot 'config.json') -Raw -Encoding UTF8 | ConvertFrom-Json).github_repo   # имя репозитория — только в config.json
 $minLength = 10
 
 function Read-Secret([string]$prompt) {
